@@ -1,11 +1,11 @@
 #include "operation.h"
 
-int add(int a, int b)
+float add(float a, float b)
 {
     return a+b;
 }
 
-int sub(int a, int b)
+float sub(float a, float b)
 {
     return a-b;
 }

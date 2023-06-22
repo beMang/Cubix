@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-Matrice_t *initialiseMatrice(int row, int cols, int defaut_value)
+Matrice_t *initialiseMatrice(int row, int cols, float default_v)
 {
     Matrice_t* result = malloc(sizeof(Matrice_t));
     if (result==NULL) return NULL;
@@ -13,23 +13,28 @@ Matrice_t *initialiseMatrice(int row, int cols, int defaut_value)
     result->cols = cols;
     result->rows = row;
 
-    result->array = (int**) malloc(sizeof(int*)*row);
+    result->array = (float**) malloc(sizeof(float*)*row);
     if(result->array==NULL) return NULL;
     for (int i = 0; i < row; i++)
     {
-        result->array[i] = (int*) malloc(sizeof(int)*cols);
-        for (int j = 0; j < cols; j++)
+        result->array[i] = (float*) calloc(cols, sizeof(float));
+        for (int j= 0; j < cols; j++)
         {
-            result->array[i][j] = defaut_value;
+            result->array[i][j] = default_v;
         }
         
     }
     return result;
 }
 
-Matrice_t *squareMatrice(int size, int default_value)
+void freeMatrice(Matrice_t* matr)
 {
-    return initialiseMatrice(size, size, default_value);
+    for (int i = 0; i < matr->rows; i++)
+    {
+        free(matr->array[i]);
+    }
+    free(matr->array);
+    free(matr);
 }
 
 void printMatrice(Matrice_t *matr)
@@ -44,13 +49,13 @@ void printMatrice(Matrice_t *matr)
         printf("[ ");
         for (int j = 0; j < matr->cols; j++)
         {
-            printf("%d ", matr->array[i][j]);
+            printf("%9.2f ", matr->array[i][j]);
         }
         printf("]\n");
     }
 }
 
-void setValue(Matrice_t *m, int x, int y, int value)
+void setValue(Matrice_t *m, int x, int y, float value)
 {
     if (x<0 || y<0 || x>=m->rows || y>=m->cols)
     {
@@ -66,7 +71,7 @@ bool checkConditionForAddition(Matrice_t* m1, Matrice_t* m2)
     return (m1->rows==m2->rows && m1->cols==m2->cols) ? true : false;
 }
 
-Matrice_t *operationOnMatrice(Matrice_t *m1, Matrice_t *m2, int (*f)(int a, int b))
+Matrice_t *operationOnMatrice(Matrice_t *m1, Matrice_t *m2, float (*f)(float a, float b))
 {
     if (!checkConditionForAddition(m1, m2)) return NULL;
     Matrice_t* result = initialiseMatrice(m1->rows, m2->cols, 0);

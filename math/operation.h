@@ -1,2 +1,2 @@
-int add(int a, int b);
-int sub(int a, int b);
+float add(float a, float b);
+float sub(float a, float b);

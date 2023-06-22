@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int main(int argc, char const *argv[])
+int main()
 {
-    Matrice_t* m1 = initialiseMatrice(4,4,0);
-
+    Matrice_t* m1 = initialiseMatrice(4,4, 0);
     for (int i = 0; i < m1->rows; i++)
     {
         m1->array[i][i] = i+1;
@@ -16,7 +15,7 @@ int main(int argc, char const *argv[])
     Matrice_t* double_m1 = addMatrice(m1, m1);
     printMatrice(double_m1);
 
-    printMatrice(multMatrice(m1, double_m1));
+    printMatrice(multMatrice(m1, double_m1)); //isn't free because we don't keep a reference to the new multMatrice !
 
     Matrice_t* M1 = initialiseMatrice(2, 3, 0);
     Matrice_t* M2 = initialiseMatrice(3,2,0);
@@ -37,11 +36,18 @@ int main(int argc, char const *argv[])
     M2->array[2][1] = -3;
     printMatrice(M2);
 
-    printMatrice(multMatrice(M1, M2));
+    printMatrice(multMatrice(M1, M2)); //isn't free because we don't keep a reference to the new multMatrice !
 
     Matrice_t* M3 = initialiseMatrice(50,3,0);
     if(multMatrice(M1, M3)==NULL) printf("Wrong dimension is okay\n");
     printMatrice(multMatrice(M1, M3));
+
+    //Free resources :
+    freeMatrice(m1);
+    freeMatrice(double_m1);
+    freeMatrice(M1);
+    freeMatrice(M2);
+    freeMatrice(M3);
 
     return 0;
 }

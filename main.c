@@ -1,43 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
+#include "rendering/object.h"
+#include "rendering/rendering.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 480
 #define TARGET_FPS 60.0
-
-void draw_points(SDL_Renderer* renderer, SDL_Color* color, int thic){
-    if(SDL_SetRenderDrawColor(renderer, color->r, color->g, color->b, color->a)!=0) {
-        fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
-        return;
-    }
-    for (int i = 0; i < 200; i++)
-    {
-        for (int j = 0; j < thic; j++)
-        {
-            SDL_RenderDrawPoint(renderer, WINDOW_WIDTH/2+j, WINDOW_HEIGHT/2+i);
-        }
-    }
-}
-
-void draw_square(SDL_Renderer* renderer, SDL_Color* color){
-    if(SDL_SetRenderDrawColor(renderer, color->r, color->g, color->b, color->a)!=0) {
-        fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
-        return;
-    }
-    SDL_Point point[5];
-    point[0].x = 100;
-    point[0].y = 100;
-    point[1].x = 200;
-    point[1].y = 100;
-    point[2].x = 200;
-    point[2].y = 200;
-    point[3].x = 100;
-    point[3].y = 200;   
-    point[4].x = 100;
-    point[4].y = 100;
-    SDL_RenderDrawLines(renderer, point, 5);
-}
 
 int main(int argc, char *argv[])
 {
@@ -61,6 +30,7 @@ int main(int argc, char *argv[])
     SDL_Color orange = {255, 127, 40, 255};
     SDL_Color white = {255,255,255,255};
     SDL_Color black = {0,0,0,255};
+    SDL_Color red = {255,0,0,255};
 
     if(SDL_SetRenderDrawColor(renderer, orange.r, orange.g, orange.b, orange.a)!=0) {
         fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
@@ -72,6 +42,14 @@ int main(int argc, char *argv[])
     }
     draw_points(renderer, &white,10);
     draw_square(renderer, &black);
+
+    float vertices[][3] = {{1,2,3},{4,5,6}};
+    int edge[][2] = {{0,1}, {2,3}};
+
+    object_t* cube = initialiseObject(vertices, 2, edge, 2);
+    draw_object(renderer, &red, cube);
+    freeObject(cube);
+
     SDL_RenderPresent(renderer);
     
     SDL_Event event;
