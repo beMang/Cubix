@@ -9,6 +9,8 @@
  */
 typedef struct object
 {
+    Matrice_t* position;
+
     Matrice_t** vertices;
     int n_vertices;
 
@@ -25,7 +27,7 @@ typedef struct object
  * @param n_edge 
  * @return object_t* 
  */
-object_t* initialiseObject(double vertices[][3], int n_vertices, int edges[][2], int n_edge);
+object_t* initialiseObject(int position[3], double vertices[][3], int n_vertices, int edges[][2], int n_edge);
 
 /**
  * @brief free an object to liberate memory

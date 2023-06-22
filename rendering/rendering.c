@@ -38,8 +38,8 @@ void draw_object(SDL_Renderer* renderer, SDL_Color* color, object_t* obj){
         fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
         return;
     }
-    rotateY(obj,  0.002);
-    Matrice_t** projected_vertices = getProjection(obj, 10);
+    rotateY(obj,  0.17);
+    Matrice_t** projected_vertices = getProjection(obj, 6);
     for (int i = 0; i < obj->n_vertices; i++)
     {
         fat_point(renderer, projected_vertices[i]->array[0][0]*scale, projected_vertices[i]->array[1][0]*scale, 5);

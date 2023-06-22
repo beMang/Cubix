@@ -6,7 +6,7 @@
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 480
-#define TARGET_FPS 10.0
+#define TARGET_FPS 1.0
 
 int main(int argc, char *argv[])
 {
@@ -30,9 +30,11 @@ int main(int argc, char *argv[])
     SDL_Color orange = {255, 127, 40, 255};
     SDL_Color red = {255,0,0,255};
 
+    int position[3] = {15,15,15};
+
     double vertices[][3] = {
-        {10,10,10},{20,10,10},{10,20,10},{20,20,10},
-        {10,10,20},{20,10,20},{10,20,20},{20,20,20}
+        {-5,-5,-5},{5,-5,-5},{-5,5,-5},{5,5,-5},
+        {-5,-5,5},{5,-5,5},{-5,5,5},{5,5,5}
     };
     int edge[][2] = {
         {0,1},{1,3},{3,2},{2,0},
@@ -40,7 +42,7 @@ int main(int argc, char *argv[])
         {0,4},{2,6},{3,7},{1,5}
     };
 
-    object_t* cube = initialiseObject(vertices, 8, edge, 12);
+    object_t* cube = initialiseObject(position, vertices, 8, edge, 12);
     
     SDL_Event event;
     SDL_bool quit = SDL_FALSE;
