@@ -124,7 +124,7 @@ int multMatrice(Matrice_t *m1, Matrice_t *m2, Matrice_t** result)
     {
         for (int j = 0; j < (*result)->cols; j++)
         {
-            int entry = 0;
+            double entry = 0;
             for (int k = 0; k < m1->cols; k++)
             {
                 entry+=m1->array[i][k]*m2->array[k][j];
@@ -151,11 +151,41 @@ Matrice_t *rotationX_matrix(double angle)
     Matrice_t* rotation = initialiseMatrice(3, 3, 0);
     if (rotation==NULL) return NULL;
 
+    rotation->array[0][0] = 1.0;
+    rotation->array[2][1] = sin(angle);
+    rotation->array[1][1] = cos(angle);
+    rotation->array[1][2] = -sin(angle);
+    rotation->array[2][2] = cos(angle);
+
+    return rotation;
+}
+
+
+Matrice_t *rotationY_matrix(double angle)
+{
+    Matrice_t* rotation = initialiseMatrice(3, 3, 0);
+    if (rotation==NULL) return NULL;
+
     rotation->array[0][0] = cos(angle);
     rotation->array[0][2] = sin(angle);
-    rotation->array[1][1] = 1;
+    rotation->array[1][1] = 1.0;
     rotation->array[2][0] = -sin(angle);
     rotation->array[2][2] = cos(angle);
 
     return rotation;
 }
+
+Matrice_t *rotationZ_matrix(double angle)
+{
+    Matrice_t* rotation = initialiseMatrice(3, 3, 0);
+    if (rotation==NULL) return NULL;
+
+    rotation->array[0][0] = cos(angle);
+    rotation->array[0][1] = -sin(angle);
+    rotation->array[2][2] = 1.0;
+    rotation->array[1][0] = sin(angle);
+    rotation->array[1][1] = cos(angle);
+
+    return rotation;
+}
+

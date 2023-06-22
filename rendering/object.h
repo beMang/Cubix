@@ -45,8 +45,8 @@ void print_object(object_t* object);
 
 Matrice_t** getProjection(object_t* object, double z_position);
 
-//void rotateX(object_t* object, double angle);
+void rotateX(object_t* object, double angle);
 void rotateY(object_t* object, double angle);
-//void rotateZ(object_t* object, double angle);
+void rotateZ(object_t* object, double angle);
 
 #endif

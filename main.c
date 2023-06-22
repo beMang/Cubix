@@ -6,7 +6,7 @@
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 480
-#define TARGET_FPS 1.0
+#define TARGET_FPS 60.0
 
 int main(int argc, char *argv[])
 {

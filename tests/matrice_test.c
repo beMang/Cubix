@@ -55,5 +55,20 @@ int main()
     freeMatrice(M2);
     freeMatrice(M3);
 
+    //ROTATIONS_TESTS
+    double angle = 0.7853;
+
+    Matrice_t* rotationX = rotationX_matrix(angle);
+    Matrice_t* rotationY = rotationY_matrix(angle);
+    Matrice_t* rotationZ = rotationZ_matrix(angle);
+
+    printMatrice(rotationX);
+    printMatrice(rotationY);
+    printMatrice(rotationZ);
+
+    freeMatrice(rotationX);
+    freeMatrice(rotationY);
+    freeMatrice(rotationZ);
+
     return 0;
 }

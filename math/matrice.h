@@ -36,7 +36,7 @@ int multMatrice(Matrice_t* m1, Matrice_t* m2, Matrice_t** result);
 //BASIC MATRICES
 Matrice_t* identity_matrix(int size);
 Matrice_t* rotationX_matrix(double angle);
-//Matrice_t* rotationY_matrix(double angle);
-//Matrice_t* rotationZ_matrix(double angle);
+Matrice_t* rotationY_matrix(double angle);
+Matrice_t* rotationZ_matrix(double angle);
 
 #endif

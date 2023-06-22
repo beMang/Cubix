@@ -4,8 +4,10 @@
 #include "object.h"
 #include "../math/matrice.h"
 
+//HELPER FUNCTIONS
 static Matrice_t** makeVertices(double coordinates[][3], int n_vertices);
 static int** makeEdges(int edges[][2], int n_edge);
+static void rotateByMatrix(object_t* object, Matrice_t* rotationMatrix);
 
 object_t* initialiseObject(int position[3], double vertices[][3], int n_vertices, int edges[][2], int n_edge)
 {
@@ -68,14 +70,13 @@ Matrice_t **getProjection(object_t *object, double z_position)
         projected_vertices[i]->array[0][0] = z_position*(object->vertices[i]->array[0][0]+object->position->array[0][0])
         /(object->vertices[i]->array[2][0]+object->position->array[2][0]); //x coordinate
         projected_vertices[i]->array[1][0] = z_position*(object->vertices[i]->array[1][0]+object->position->array[1][0])
-        /(object->vertices[i]->array[2][0]+object->position->array[0][0]); //y coordinate
+        /(object->vertices[i]->array[2][0]+object->position->array[2][0]); //y coordinate
     }
     return projected_vertices;
 }
 
-void rotateY(object_t *object, double angle)
+static void rotateByMatrix(object_t* object, Matrice_t* rotationMatrix)
 {
-    Matrice_t* rotationMatrix = rotationX_matrix(angle);
     for (int i = 0; i < object->n_vertices; i++)
     {
         Matrice_t* new_vertices;
@@ -85,6 +86,28 @@ void rotateY(object_t *object, double angle)
         object->vertices[i]->array[0][2] = new_vertices->array[0][2];
         freeMatrice(new_vertices);
     }
+}
+
+void rotateX(object_t *object, double angle)
+{
+    Matrice_t* rotationMatrix = rotationX_matrix(angle);
+    rotateByMatrix(object, rotationMatrix);
+    freeMatrice(rotationMatrix);
+}
+
+void rotateY(object_t *object, double angle)
+{
+    Matrice_t* rotationMatrix = rotationY_matrix(angle);
+    printMatrice(rotationMatrix);
+    rotateByMatrix(object, rotationMatrix);
+    print_object(object);
+    freeMatrice(rotationMatrix);
+}
+
+void rotateZ(object_t *object, double angle)
+{
+    Matrice_t* rotationMatrix = rotationZ_matrix(angle);
+    rotateByMatrix(object, rotationMatrix);
     freeMatrice(rotationMatrix);
 }
 
