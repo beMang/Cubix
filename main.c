@@ -6,7 +6,7 @@
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 480
-#define TARGET_FPS 60.0
+#define TARGET_FPS 10.0
 
 int main(int argc, char *argv[])
 {
@@ -28,11 +28,9 @@ int main(int argc, char *argv[])
     SDL_SetWindowTitle(window, "Ceci est un test :)");
 
     SDL_Color orange = {255, 127, 40, 255};
-    SDL_Color white = {255,255,255,255};
-    SDL_Color black = {0,0,0,255};
     SDL_Color red = {255,0,0,255};
 
-    float vertices[][3] = {
+    double vertices[][3] = {
         {10,10,10},{20,10,10},{10,20,10},{20,20,10},
         {10,10,20},{20,10,20},{10,20,20},{20,20,20}
     };
@@ -48,6 +46,7 @@ int main(int argc, char *argv[])
     SDL_bool quit = SDL_FALSE;
     while(!quit)
     {
+        Uint32 t1 = SDL_GetTicks64();
         if(SDL_SetRenderDrawColor(renderer, orange.r, orange.g, orange.b, orange.a)!=0) {
         fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
         goto Quit;
@@ -57,20 +56,18 @@ int main(int argc, char *argv[])
         goto Quit;
         }
 
-        Uint32 t1 = SDL_GetTicks64();
         while(SDL_PollEvent(&event))
             if(event.type == SDL_QUIT) quit = SDL_TRUE;
+
+        draw_object(renderer, &red, cube);
+        SDL_RenderPresent(renderer);
+
         SDL_Delay((int)(1/TARGET_FPS*1000));
         Uint32 t2 = SDL_GetTicks64();
         float time = ((float) (t2-t1))/1000;
         printf("fps : %f.1 \n", 1/time);
-        draw_object(renderer, &red, cube);
-        draw_points(renderer, &white,10);
-        draw_square(renderer, &black);
-        
-        SDL_RenderPresent(renderer);
     }
-    
+
     status=EXIT_SUCCESS;
     freeObject(cube);
 

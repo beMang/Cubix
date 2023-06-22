@@ -4,10 +4,10 @@
 #include "object.h"
 #include "../math/matrice.h"
 
-static Matrice_t** makeVertices(float coordinates[][3], int n_vertices);
+static Matrice_t** makeVertices(double coordinates[][3], int n_vertices);
 static int** makeEdges(int edges[][2], int n_edge);
 
-object_t* initialiseObject(float vertices[][3], int n_vertices, int edges[][2], int n_edge)
+object_t* initialiseObject(double vertices[][3], int n_vertices, int edges[][2], int n_edge)
 {
     object_t* result = malloc(sizeof(object_t));
 
@@ -51,7 +51,7 @@ void print_object(object_t *object)
     }
 }
 
-Matrice_t **getProjection(object_t *object, float z_position)
+Matrice_t **getProjection(object_t *object, double z_position)
 {
     Matrice_t** projected_vertices = malloc(sizeof(Matrice_t*)*object->n_vertices);
     if (projected_vertices==NULL) return NULL;
@@ -65,9 +65,10 @@ Matrice_t **getProjection(object_t *object, float z_position)
     return projected_vertices;
 }
 
-void rotateY(object_t *object, float angle)
+void rotateY(object_t *object, double angle)
 {
     Matrice_t* rotationMatrix = rotationX_matrix(angle);
+    printMatrice(rotationMatrix);
     for (int i = 0; i < object->n_vertices; i++)
     {
         Matrice_t* new_vertices;
@@ -80,7 +81,7 @@ void rotateY(object_t *object, float angle)
     freeMatrice(rotationMatrix);
 }
 
-static Matrice_t** makeVertices(float coordinates[][3], int n_vertices)
+static Matrice_t** makeVertices(double coordinates[][3], int n_vertices)
 {
 
     Matrice_t** result = malloc(sizeof(Matrice_t*)*n_vertices);

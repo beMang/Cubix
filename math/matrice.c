@@ -6,7 +6,7 @@
 #include <string.h>
 #include <math.h>
 
-Matrice_t *initialiseMatrice(int row, int cols, float default_v)
+Matrice_t *initialiseMatrice(int row, int cols, double default_v)
 {
     Matrice_t* result = malloc(sizeof(Matrice_t));
     if (result==NULL) return NULL;
@@ -14,11 +14,11 @@ Matrice_t *initialiseMatrice(int row, int cols, float default_v)
     result->cols = cols;
     result->rows = row;
 
-    result->array = (float**) malloc(sizeof(float*)*row);
+    result->array = (double**) malloc(sizeof(double*)*row);
     if(result->array==NULL) return NULL;
     for (int i = 0; i < row; i++)
     {
-        result->array[i] = (float*) calloc(cols, sizeof(float));
+        result->array[i] = (double*) calloc(cols, sizeof(double));
         for (int j= 0; j < cols; j++)
         {
             result->array[i][j] = default_v;
@@ -71,7 +71,7 @@ void printMatrice(Matrice_t *matr)
     }
 }
 
-void setValue(Matrice_t *m, int x, int y, float value)
+void setValue(Matrice_t *m, int x, int y, double value)
 {
     if (x<0 || y<0 || x>=m->rows || y>=m->cols)
     {
@@ -87,7 +87,7 @@ bool checkConditionForAddition(Matrice_t* m1, Matrice_t* m2)
     return (m1->rows==m2->rows && m1->cols==m2->cols) ? true : false;
 }
 
-int operationOnMatrice(Matrice_t *m1, Matrice_t *m2, float (*f)(float a, float b), Matrice_t** result)
+int operationOnMatrice(Matrice_t *m1, Matrice_t *m2, double (*f)(double a, double b), Matrice_t** result)
 {
     if (!checkConditionForAddition(m1, m2)) return -1;
     *result = initialiseMatrice(m1->rows, m2->cols, 0);
@@ -146,7 +146,7 @@ Matrice_t *identity_matrix(int size)
     return idendity;
 }
 
-Matrice_t *rotationX_matrix(float angle)
+Matrice_t *rotationX_matrix(double angle)
 {
     Matrice_t* rotation = initialiseMatrice(3, 3, 0);
     if (rotation==NULL) return NULL;

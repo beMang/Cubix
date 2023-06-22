@@ -25,7 +25,7 @@ typedef struct object
  * @param n_edge 
  * @return object_t* 
  */
-object_t* initialiseObject(float vertices[][3], int n_vertices, int edges[][2], int n_edge);
+object_t* initialiseObject(double vertices[][3], int n_vertices, int edges[][2], int n_edge);
 
 /**
  * @brief free an object to liberate memory
@@ -41,10 +41,10 @@ void freeObject(object_t* obj);
  */
 void print_object(object_t* object);
 
-Matrice_t** getProjection(object_t* object, float z_position);
+Matrice_t** getProjection(object_t* object, double z_position);
 
-//void rotateX(object_t* object, float angle);
-void rotateY(object_t* object, float angle);
-//void rotateZ(object_t* object, float angle);
+//void rotateX(object_t* object, double angle);
+void rotateY(object_t* object, double angle);
+//void rotateZ(object_t* object, double angle);
 
 #endif

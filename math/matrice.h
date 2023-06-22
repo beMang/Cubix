@@ -15,11 +15,11 @@ typedef struct Matrice
 {
     int rows;
     int cols;
-    float** array;
+    double** array;
 } Matrice_t;
 
 //INITIALISATION
-Matrice_t *initialiseMatrice(int row, int cols, float default_v);
+Matrice_t *initialiseMatrice(int row, int cols, double default_v);
 void freeMatrice(Matrice_t* matr);
 
 int copyMatrice(Matrice_t* dest, Matrice_t* src);
@@ -28,15 +28,15 @@ int copyMatrice(Matrice_t* dest, Matrice_t* src);
 void printMatrice(Matrice_t* matr);
 
 //OPERATIONS
-void setValue(Matrice_t* m, int x, int y, float value);
+void setValue(Matrice_t* m, int x, int y, double value);
 int addMatrice(Matrice_t* m1, Matrice_t* m2, Matrice_t** result);
 int subMatrice(Matrice_t* m1, Matrice_t* m2, Matrice_t** result);
 int multMatrice(Matrice_t* m1, Matrice_t* m2, Matrice_t** result);
 
 //BASIC MATRICES
 Matrice_t* identity_matrix(int size);
-Matrice_t* rotationX_matrix(float angle);
-//Matrice_t* rotationY_matrix(float angle);
-//Matrice_t* rotationZ_matrix(float angle);
+Matrice_t* rotationX_matrix(double angle);
+//Matrice_t* rotationY_matrix(double angle);
+//Matrice_t* rotationZ_matrix(double angle);
 
 #endif
