@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <math.h>
 
 Matrice_t *initialiseMatrice(int row, int cols, float default_v)
 {
@@ -35,6 +36,21 @@ void freeMatrice(Matrice_t* matr)
     }
     free(matr->array);
     free(matr);
+}
+
+int copyMatrice(Matrice_t *dest, Matrice_t *src)
+{
+    dest = initialiseMatrice(src->rows, src->cols, 0);
+    if (dest==NULL) return -1;
+
+    for (int i = 0; i < dest->cols; i++)
+    {
+        for (int j = 0; j < dest->rows; j++)
+        {
+            dest->array[i][j] = src->array[i][j];
+        }
+    }
+    return 0;
 }
 
 void printMatrice(Matrice_t *matr)
@@ -117,4 +133,29 @@ int multMatrice(Matrice_t *m1, Matrice_t *m2, Matrice_t** result)
         }
     }
     return 0;
+}
+
+Matrice_t *identity_matrix(int size)
+{
+    Matrice_t* idendity = initialiseMatrice(size, size, 0);
+    if (idendity==NULL) return NULL;
+    for (int i = 0; i < size; i++)
+    {
+        idendity->array[i][i] = 1;
+    }
+    return idendity;
+}
+
+Matrice_t *rotationX_matrix(float angle)
+{
+    Matrice_t* rotation = initialiseMatrice(3, 3, 0);
+    if (rotation==NULL) return NULL;
+
+    rotation->array[0][0] = cos(angle);
+    rotation->array[0][2] = sin(angle);
+    rotation->array[1][1] = 1;
+    rotation->array[2][0] = -sin(angle);
+    rotation->array[2][2] = cos(angle);
+
+    return rotation;
 }

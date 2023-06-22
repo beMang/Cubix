@@ -8,6 +8,8 @@
 
 #define WINDOW_HEIGHT 480
 
+static void fat_point(SDL_Renderer* renderer, int x, int y, int size);
+
 void draw_points(SDL_Renderer* renderer, SDL_Color* color, int thic){
     if(SDL_SetRenderDrawColor(renderer, color->r, color->g, color->b, color->a)!=0) {
         fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
@@ -22,15 +24,33 @@ void draw_points(SDL_Renderer* renderer, SDL_Color* color, int thic){
     }
 }
 
+static void fat_point(SDL_Renderer* renderer, int x, int y, int size){
+    int up = y-size/2;
+    int left = x-size/2;
+
+    SDL_Rect rectangle = {left, up, size, size};
+    SDL_RenderFillRect(renderer, &rectangle);
+}
+
 void draw_object(SDL_Renderer* renderer, SDL_Color* color, object_t* obj){
     int scale = 20;
     if(SDL_SetRenderDrawColor(renderer, color->r, color->g, color->b, color->a)!=0) {
         fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
         return;
     }
+    rotateY(obj, 0.0002);
+    Matrice_t** projected_vertices = getProjection(obj, 10);
     for (int i = 0; i < obj->n_vertices; i++)
     {
-        SDL_RenderDrawPoint(renderer, obj->vertices[i]->array[0][0]*scale, obj->vertices[i]->array[1][0]*scale);
+        fat_point(renderer, projected_vertices[i]->array[0][0]*scale, projected_vertices[i]->array[1][0]*scale, 5);
+    }
+    for (int i = 0; i < obj->n_edges; i++)
+    {
+        int x1 = projected_vertices[obj->edges[i][0]]->array[0][0];
+        int y1 = projected_vertices[obj->edges[i][0]]->array[1][0];
+        int x2 = projected_vertices[obj->edges[i][1]]->array[0][0];
+        int y2 = projected_vertices[obj->edges[i][1]]->array[1][0];
+        SDL_RenderDrawLine(renderer, x1*scale, y1*scale, x2*scale, y2*scale);
     }
 }
 

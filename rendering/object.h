@@ -41,7 +41,10 @@ void freeObject(object_t* obj);
  */
 void print_object(object_t* object);
 
-Matrice_t** makeVertices(float coordinates[][3], int n_vertices);
-int** makeEdges(int edges[][2], int n_edge);
+Matrice_t** getProjection(object_t* object, float z_position);
+
+//void rotateX(object_t* object, float angle);
+void rotateY(object_t* object, float angle);
+//void rotateZ(object_t* object, float angle);
 
 #endif

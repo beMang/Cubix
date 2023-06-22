@@ -32,30 +32,31 @@ int main(int argc, char *argv[])
     SDL_Color black = {0,0,0,255};
     SDL_Color red = {255,0,0,255};
 
-    if(SDL_SetRenderDrawColor(renderer, orange.r, orange.g, orange.b, orange.a)!=0) {
-        fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
-        goto Quit;
-    }
-    if(SDL_RenderClear(renderer)!=0) {
-        fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
-        goto Quit;
-    }
-    draw_points(renderer, &white,10);
-    draw_square(renderer, &black);
+    float vertices[][3] = {
+        {10,10,10},{20,10,10},{10,20,10},{20,20,10},
+        {10,10,20},{20,10,20},{10,20,20},{20,20,20}
+    };
+    int edge[][2] = {
+        {0,1},{1,3},{3,2},{2,0},
+        {4,5},{5,7},{7,6},{6,4},
+        {0,4},{2,6},{3,7},{1,5}
+    };
 
-    float vertices[][3] = {{1,2,3},{4,5,6}};
-    int edge[][2] = {{0,1}, {2,3}};
-
-    object_t* cube = initialiseObject(vertices, 2, edge, 2);
-    draw_object(renderer, &red, cube);
-    freeObject(cube);
-
-    SDL_RenderPresent(renderer);
+    object_t* cube = initialiseObject(vertices, 8, edge, 12);
     
     SDL_Event event;
     SDL_bool quit = SDL_FALSE;
     while(!quit)
     {
+        if(SDL_SetRenderDrawColor(renderer, orange.r, orange.g, orange.b, orange.a)!=0) {
+        fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
+        goto Quit;
+        }
+        if(SDL_RenderClear(renderer)!=0) {
+        fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
+        goto Quit;
+        }
+
         Uint32 t1 = SDL_GetTicks64();
         while(SDL_PollEvent(&event))
             if(event.type == SDL_QUIT) quit = SDL_TRUE;
@@ -63,8 +64,15 @@ int main(int argc, char *argv[])
         Uint32 t2 = SDL_GetTicks64();
         float time = ((float) (t2-t1))/1000;
         printf("fps : %f.1 \n", 1/time);
+        draw_object(renderer, &red, cube);
+        draw_points(renderer, &white,10);
+        draw_square(renderer, &black);
+        
+        SDL_RenderPresent(renderer);
     }
+    
     status=EXIT_SUCCESS;
+    freeObject(cube);
 
 Quit:
     if (window!=NULL) SDL_DestroyWindow(window);
