@@ -71,50 +71,50 @@ bool checkConditionForAddition(Matrice_t* m1, Matrice_t* m2)
     return (m1->rows==m2->rows && m1->cols==m2->cols) ? true : false;
 }
 
-Matrice_t *operationOnMatrice(Matrice_t *m1, Matrice_t *m2, float (*f)(float a, float b))
+int operationOnMatrice(Matrice_t *m1, Matrice_t *m2, float (*f)(float a, float b), Matrice_t** result)
 {
-    if (!checkConditionForAddition(m1, m2)) return NULL;
-    Matrice_t* result = initialiseMatrice(m1->rows, m2->cols, 0);
-    for (int i = 0; i < result->rows; i++)
+    if (!checkConditionForAddition(m1, m2)) return -1;
+    *result = initialiseMatrice(m1->rows, m2->cols, 0);
+    for (int i = 0; i < (*result)->rows; i++)
     {
-        for (int j = 0; j < result->cols; j++)
+        for (int j = 0; j < (*result)->cols; j++)
         {
-            result->array[i][j] = f(m1->array[i][j], m2->array[i][j]);
+            (*result)->array[i][j] = f(m1->array[i][j], m2->array[i][j]);
         }
     }
-    return result;
+    return 0;
 }
 
-Matrice_t *addMatrice(Matrice_t *m1, Matrice_t *m2)
+int addMatrice(Matrice_t *m1, Matrice_t *m2, Matrice_t** result)
 {
-    return operationOnMatrice(m1, m2, add);
+    return operationOnMatrice(m1, m2, add, result);
 }
 
-Matrice_t *subMatrice(Matrice_t *m1, Matrice_t *m2)
+int subMatrice(Matrice_t *m1, Matrice_t *m2, Matrice_t** result)
 {
-    return operationOnMatrice(m1, m2, sub);
+    return operationOnMatrice(m1, m2, sub, result);
 }
 
 bool checkConditionForMultiplication(Matrice_t* m1, Matrice_t* m2){
     return (m1->cols==m2->rows) ? true : false;
 }
 
-Matrice_t* multMatrice(Matrice_t *m1, Matrice_t *m2)
+int multMatrice(Matrice_t *m1, Matrice_t *m2, Matrice_t** result)
 {
-    if (checkConditionForMultiplication(m1, m2)==false) return NULL;
+    if (checkConditionForMultiplication(m1, m2)==false) return -1;
 
-    Matrice_t* result = initialiseMatrice(m1->rows, m2->cols, 0);
-    for (int i = 0; i < result->rows; i++)
+    *result = initialiseMatrice(m1->rows, m2->cols, 0);
+    for (int i = 0; i < (*result)->rows; i++)
     {
-        for (int j = 0; j < result->cols; j++)
+        for (int j = 0; j < (*result)->cols; j++)
         {
             int entry = 0;
             for (int k = 0; k < m1->cols; k++)
             {
                 entry+=m1->array[i][k]*m2->array[k][j];
             }
-            result->array[i][j] = entry;
+            (*result)->array[i][j] = entry;
         }
     }
-    return result;
+    return 0;
 }

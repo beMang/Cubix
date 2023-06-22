@@ -4,6 +4,8 @@
 
 int main()
 {
+    Matrice_t* result;
+
     Matrice_t* m1 = initialiseMatrice(4,4, 0);
     for (int i = 0; i < m1->rows; i++)
     {
@@ -11,11 +13,16 @@ int main()
     }
     
     printMatrice(m1);
-
-    Matrice_t* double_m1 = addMatrice(m1, m1);
+    Matrice_t* double_m1;
+    addMatrice(m1, m1, &double_m1);
     printMatrice(double_m1);
 
-    printMatrice(multMatrice(m1, double_m1)); //isn't free because we don't keep a reference to the new multMatrice !
+    multMatrice(m1, double_m1, &result);
+    printMatrice(result);
+
+    freeMatrice(result);
+    freeMatrice(double_m1);
+    freeMatrice(m1);
 
     Matrice_t* M1 = initialiseMatrice(2, 3, 0);
     Matrice_t* M2 = initialiseMatrice(3,2,0);
@@ -36,15 +43,14 @@ int main()
     M2->array[2][1] = -3;
     printMatrice(M2);
 
-    printMatrice(multMatrice(M1, M2)); //isn't free because we don't keep a reference to the new multMatrice !
+    multMatrice(M1, M2, &result);
+    printMatrice(result);
+
+    freeMatrice(result);
 
     Matrice_t* M3 = initialiseMatrice(50,3,0);
-    if(multMatrice(M1, M3)==NULL) printf("Wrong dimension is okay\n");
-    printMatrice(multMatrice(M1, M3));
+    if(multMatrice(M1, M3, &result)==-1) printf("Wrong dimension is okay\n");
 
-    //Free resources :
-    freeMatrice(m1);
-    freeMatrice(double_m1);
     freeMatrice(M1);
     freeMatrice(M2);
     freeMatrice(M3);

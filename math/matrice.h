@@ -27,8 +27,8 @@ void printMatrice(Matrice_t* matr);
 
 //OPERATIONS
 void setValue(Matrice_t* m, int x, int y, float value);
-Matrice_t* addMatrice(Matrice_t* m1, Matrice_t* m2);
-Matrice_t* subMatrice(Matrice_t* m1, Matrice_t* m2);
-Matrice_t* multMatrice(Matrice_t* m1, Matrice_t* m2);
+int addMatrice(Matrice_t* m1, Matrice_t* m2, Matrice_t** result);
+int subMatrice(Matrice_t* m1, Matrice_t* m2, Matrice_t** result);
+int multMatrice(Matrice_t* m1, Matrice_t* m2, Matrice_t** result);
 
 #endif
