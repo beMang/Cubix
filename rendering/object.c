@@ -9,7 +9,7 @@ static Matrice_t** makeVertices(double coordinates[][3], int n_vertices);
 static int** makeEdges(int edges[][2], int n_edge);
 static void rotateByMatrix(object_t* object, Matrice_t* rotationMatrix);
 
-object_t* initialiseObject(int position[3], double vertices[][3], int n_vertices, int edges[][2], int n_edge)
+object_t* initialiseObject(int position[3], int rotation[3], double vertices[][3], int n_vertices, int edges[][2], int n_edge)
 {
     object_t* result = malloc(sizeof(object_t));
 
@@ -23,6 +23,12 @@ object_t* initialiseObject(int position[3], double vertices[][3], int n_vertices
     result->position->array[0][0] = position[0];
     result->position->array[1][0] = position[1];
     result->position->array[2][0] = position[2];
+
+    result->rotation = malloc(sizeof(Matrice_t*));
+    result->rotation = initialiseMatrice(3,1,0);
+    result->rotation->array[0][0] = rotation[0];
+    result->rotation->array[1][0] = rotation[1];
+    result->rotation->array[2][0] = rotation[2];
     
     return result;
 }
@@ -61,54 +67,51 @@ void print_object(object_t *object)
 
 Matrice_t **getProjection(object_t *object, double z_position)
 {
+    Matrice_t* rotationX = rotationX_matrix(object->rotation->array[0][0]);
+    Matrice_t* rotationY = rotationY_matrix(object->rotation->array[1][0]);
+    Matrice_t* rotationZ = rotationZ_matrix(object->rotation->array[2][0]);
+
     Matrice_t** projected_vertices = malloc(sizeof(Matrice_t*)*object->n_vertices);
     if (projected_vertices==NULL) return NULL;
 
     for (int i = 0; i < object->n_vertices; i++)
     {
-        projected_vertices[i] = initialiseMatrice(2,1,0);
-        projected_vertices[i]->array[0][0] = z_position*(object->vertices[i]->array[0][0]+object->position->array[0][0])
-        /(object->vertices[i]->array[2][0]+object->position->array[2][0]); //x coordinate
-        projected_vertices[i]->array[1][0] = z_position*(object->vertices[i]->array[1][0]+object->position->array[1][0])
-        /(object->vertices[i]->array[2][0]+object->position->array[2][0]); //y coordinate
-    }
-    return projected_vertices;
-}
+        Matrice_t* interComputation1;
+        multMatrice(rotationZ, object->vertices[i], &interComputation1);
+        Matrice_t* interComputation2;
+        multMatrice(rotationY, interComputation1, &interComputation2);
+        freeMatrice(interComputation1);
+        multMatrice(rotationX, interComputation2, projected_vertices);
+        freeMatrice(interComputation2);
 
-static void rotateByMatrix(object_t* object, Matrice_t* rotationMatrix)
-{
-    for (int i = 0; i < object->n_vertices; i++)
-    {
-        Matrice_t* new_vertices;
-        multMatrice(rotationMatrix, object->vertices[i], &new_vertices);
-        object->vertices[i]->array[0][0] = new_vertices->array[0][0];
-        object->vertices[i]->array[0][1] = new_vertices->array[0][1];
-        object->vertices[i]->array[0][2] = new_vertices->array[0][2];
-        freeMatrice(new_vertices);
+        (*projected_vertices)->array[0][0] = z_position*((*projected_vertices)->array[0][0]+object->position->array[0][0])
+        /((*projected_vertices)->array[2][0]+object->position->array[2][0]); //x coordinate
+        (*projected_vertices)->array[1][0] = z_position*((*projected_vertices)->array[1][0]+object->position->array[1][0])
+        /((*projected_vertices)->array[2][0]+object->position->array[2][0]); //y coordinate
+        projected_vertices++;
     }
+    projected_vertices-=object->n_vertices;
+
+    freeMatrice(rotationX);
+    freeMatrice(rotationY);
+    freeMatrice(rotationZ);
+
+    return projected_vertices;
 }
 
 void rotateX(object_t *object, double angle)
 {
-    Matrice_t* rotationMatrix = rotationX_matrix(angle);
-    rotateByMatrix(object, rotationMatrix);
-    freeMatrice(rotationMatrix);
+    object->rotation->array[0][0]+=angle;
 }
 
 void rotateY(object_t *object, double angle)
 {
-    Matrice_t* rotationMatrix = rotationY_matrix(angle);
-    printMatrice(rotationMatrix);
-    rotateByMatrix(object, rotationMatrix);
-    print_object(object);
-    freeMatrice(rotationMatrix);
+    object->rotation->array[1][0]+=angle;
 }
 
 void rotateZ(object_t *object, double angle)
 {
-    Matrice_t* rotationMatrix = rotationZ_matrix(angle);
-    rotateByMatrix(object, rotationMatrix);
-    freeMatrice(rotationMatrix);
+    object->rotation->array[2][0]+=angle;
 }
 
 static Matrice_t** makeVertices(double coordinates[][3], int n_vertices)

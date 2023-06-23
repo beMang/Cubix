@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
     SDL_Color red = {255,0,0,255};
 
     int position[3] = {15,15,15};
+    int rotation[3] = {0,0,0};
 
     double vertices[][3] = {
         {-5,-5,-5},{5,-5,-5},{-5,5,-5},{5,5,-5},
@@ -42,7 +43,7 @@ int main(int argc, char *argv[])
         {0,4},{2,6},{3,7},{1,5}
     };
 
-    object_t* cube = initialiseObject(position, vertices, 8, edge, 12);
+    object_t* cube = initialiseObject(position, rotation, vertices, 8, edge, 12);
     
     SDL_Event event;
     SDL_bool quit = SDL_FALSE;
