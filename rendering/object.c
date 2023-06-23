@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "object.h"
 #include "../math/matrice.h"
+#include "camera.h"
 
 //HELPER FUNCTIONS
 static Matrice_t** makeVertices(double coordinates[][3], int n_vertices);
@@ -11,6 +12,7 @@ static int** makeEdges(int edges[][2], int n_edge);
 object_t* initialiseObject(int position[3], int rotation[3], double vertices[][3], int n_vertices, int edges[][2], int n_edge)
 {
     object_t* result = malloc(sizeof(object_t));
+    if(result==NULL) return NULL;
 
     result->n_edges = n_edge;
     result->n_vertices = n_vertices;
@@ -66,7 +68,7 @@ void print_object(object_t *object)
     }
 }
 
-Matrice_t **getProjection(object_t *object, double z_position)
+Matrice_t **getProjection(camera_t* camera, object_t *object, double z_position)
 {
     Matrice_t* rotationX = rotationX_matrix(object->rotation->array[0][0]);
     Matrice_t* rotationY = rotationY_matrix(object->rotation->array[1][0]);

@@ -1,4 +1,5 @@
 #include "rendering.h"
+#include "camera.h"
 #include <stdlib.h>
 #include "object.h"
 
@@ -35,12 +36,12 @@ static void fat_point(SDL_Renderer* renderer, int x, int y, int size){
     }
 }
 
-void draw_object(SDL_Renderer* renderer, SDL_Color* color, object_t* obj){
+void draw_object(SDL_Renderer* renderer, camera_t* camera, SDL_Color* color, object_t* obj){
     if(SDL_SetRenderDrawColor(renderer, color->r, color->g, color->b, color->a)!=0) {
         fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
         return;
     }
-    Matrice_t** projected_vertices = getProjection(obj, 120.0);
+    Matrice_t** projected_vertices = getProjection(camera, obj, 120.0);
     for (int i = 0; i < obj->n_vertices; i++)
     {
         fat_point(renderer, projected_vertices[i]->array[0][0], projected_vertices[i]->array[1][0], 5);

@@ -188,4 +188,3 @@ Matrice_t *rotationZ_matrix(double angle)
 
     return rotation;
 }
-

@@ -1,4 +1,5 @@
 #include "../math/matrice.h"
+#include "camera.h"
 
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
@@ -44,7 +45,7 @@ void freeObject(object_t* obj);
  */
 void print_object(object_t* object);
 
-Matrice_t** getProjection(object_t* object, double z_position);
+Matrice_t** getProjection(camera_t* camera, object_t* object, double z_position);
 
 void rotateX(object_t* object, double angle);
 void rotateY(object_t* object, double angle);

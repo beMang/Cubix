@@ -3,7 +3,6 @@
 #include <SDL2/SDL.h>
 #include "rendering/object.h"
 #include "rendering/rendering.h"
-#include "rendering/camera.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 480
@@ -30,26 +29,6 @@ int main()
 
     SDL_Color orange = {255, 127, 40, 255};
     SDL_Color red = {255,0,0,255};
-
-    int position[3] = {15,15,15};
-    int rotation[3] = {0,0,0};
-
-    double vertices[][3] = {
-        {-5,-5,-5},{5,-5,-5},{-5,5,-5},{5,5,-5},
-        {-5,-5,5},{5,-5,5},{-5,5,5},{5,5,5}
-    };
-    int edge[][2] = {
-        {0,1},{1,3},{3,2},{2,0},
-        {4,5},{5,7},{7,6},{6,4},
-        {0,4},{2,6},{3,7},{1,5}
-    };
-
-    int camera_position[3] = {7,0,-2};
-    camera_t* camera = init_camera(camera_position, rotation);
-    if(camera==NULL) fprintf(stderr, "Erreur lords de l'initialisation de la caméra");
-
-    object_t* cube = initialiseObject(position, rotation, vertices, 8, edge, 12);
-    if(cube==NULL) fprintf(stderr, "Erreur lords de l'initialisation d'un objet");
     
     SDL_Event event;
     SDL_bool quit = SDL_FALSE;
@@ -65,13 +44,10 @@ int main()
             goto Quit;
         }
 
+        SDL_RenderPresent(renderer);
+
         while(SDL_PollEvent(&event))
             if(event.type == SDL_QUIT) quit = SDL_TRUE;
-
-        rotateX(cube, 0.03);
-
-        draw_object(renderer, camera, &red, cube);
-        SDL_RenderPresent(renderer);
 
         SDL_Delay((int)(1/TARGET_FPS*1000));
         Uint32 t2 = SDL_GetTicks64();
@@ -81,7 +57,6 @@ int main()
     status=EXIT_SUCCESS;
 
 Quit:
-    freeObject(cube);
     if (window!=NULL) SDL_DestroyWindow(window);
     if (renderer!=NULL) SDL_DestroyRenderer(renderer);
     SDL_Quit();
