@@ -7,7 +7,6 @@
 //HELPER FUNCTIONS
 static Matrice_t** makeVertices(double coordinates[][3], int n_vertices);
 static int** makeEdges(int edges[][2], int n_edge);
-static void rotateByMatrix(object_t* object, Matrice_t* rotationMatrix);
 
 object_t* initialiseObject(int position[3], int rotation[3], double vertices[][3], int n_vertices, int edges[][2], int n_edge)
 {
@@ -46,6 +45,8 @@ void freeObject(object_t *obj)
         freeMatrice(obj->vertices[i]);
     }
     free(obj->vertices);
+    freeMatrice(obj->position);
+    freeMatrice(obj->rotation);
     free(obj);
 }
 

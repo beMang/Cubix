@@ -29,7 +29,10 @@ static void fat_point(SDL_Renderer* renderer, int x, int y, int size){
     int left = x-size/2;
 
     SDL_Rect rectangle = {left, up, size, size};
-    if (SDL_RenderFillRect(renderer, &rectangle)==-1) printf(SDL_GetError());
+    if (SDL_RenderFillRect(renderer, &rectangle)==-1){
+        fprintf(stderr, "Erreur de rendu fat_point : %s", SDL_GetError());
+        return;
+    }
 }
 
 void draw_object(SDL_Renderer* renderer, SDL_Color* color, object_t* obj){
@@ -37,7 +40,6 @@ void draw_object(SDL_Renderer* renderer, SDL_Color* color, object_t* obj){
         fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
         return;
     }
-    rotateY(obj,  0.052);
     Matrice_t** projected_vertices = getProjection(obj, 120.0);
     for (int i = 0; i < obj->n_vertices; i++)
     {
@@ -51,6 +53,11 @@ void draw_object(SDL_Renderer* renderer, SDL_Color* color, object_t* obj){
         int y2 = projected_vertices[obj->edges[i][1]]->array[1][0];
         if(SDL_RenderDrawLine(renderer, x1, y1, x2, y2)!=0) printf("Error line");
     }
+    for (int i = 0; i < obj->n_vertices; i++)
+    {
+        freeMatrice(projected_vertices[i]);
+    }
+    free(projected_vertices);
 }
 
 void draw_square(SDL_Renderer* renderer, SDL_Color* color){

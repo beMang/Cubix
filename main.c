@@ -20,12 +20,12 @@ int main(int argc, char *argv[])
     SDL_Renderer* renderer;
     SDL_Window* window;
 
-    if (SDL_CreateWindowAndRenderer(WINDOW_WIDTH,WINDOW_HEIGHT, SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE, &window, &renderer)!=0){
+    if (SDL_CreateWindowAndRenderer(WINDOW_WIDTH,WINDOW_HEIGHT, SDL_WINDOW_SHOWN, &window, &renderer)!=0){
         fprintf(stderr, "Erreur de SDL_CreateWindowAndRenderer : %s", SDL_GetError());
         goto Quit;
     }
 
-    SDL_SetWindowTitle(window, "Ceci est un test :)");
+    SDL_SetWindowTitle(window, "Cubix");
 
     SDL_Color orange = {255, 127, 40, 255};
     SDL_Color red = {255,0,0,255};
@@ -51,16 +51,18 @@ int main(int argc, char *argv[])
     {
         Uint32 t1 = SDL_GetTicks64();
         if(SDL_SetRenderDrawColor(renderer, orange.r, orange.g, orange.b, orange.a)!=0) {
-        fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
-        goto Quit;
+            fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
+            goto Quit;
         }
         if(SDL_RenderClear(renderer)!=0) {
-        fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
-        goto Quit;
+            fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
+            goto Quit;
         }
 
         while(SDL_PollEvent(&event))
             if(event.type == SDL_QUIT) quit = SDL_TRUE;
+
+        rotateX(cube, 0.03);
 
         draw_object(renderer, &red, cube);
         SDL_RenderPresent(renderer);
@@ -70,11 +72,10 @@ int main(int argc, char *argv[])
         float time = ((float) (t2-t1))/1000;
         printf("fps : %f.1 \n", 1/time);
     }
-
     status=EXIT_SUCCESS;
-    freeObject(cube);
 
 Quit:
+    freeObject(cube);
     if (window!=NULL) SDL_DestroyWindow(window);
     if (renderer!=NULL) SDL_DestroyRenderer(renderer);
     SDL_Quit();
