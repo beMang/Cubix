@@ -50,4 +50,12 @@ void setPosition(camera_t* camera, int x, int y, int z);
  */
 void setRotation(camera_t* camera, int x, int y, int z);
 
+void rotate_X_camera(camera_t* camera, double angle);
+void rotate_Y_camera(camera_t* camera, double angle);
+void rotate_Z_camera(camera_t* camera, double angle);
+
+void translate_X_camera(camera_t* camera, double displacement);
+void translate_Y_camera(camera_t* camera, double displacement);
+void translate_Z_camera(camera_t* camera, double displacement);
+
 #endif

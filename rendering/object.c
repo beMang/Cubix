@@ -95,6 +95,11 @@ Matrice_t **getProjection(camera_t* camera, object_t *object)
         multMatrice(rotationY, interComputation1, &interComputation2);
         multMatrice(rotationX, interComputation2, projected_vertices);
 
+        //Global position of the object
+        (*projected_vertices)->array[0][0] += object->position->array[0][0];
+        (*projected_vertices)->array[1][0] += object->position->array[1][0];
+        (*projected_vertices)->array[2][0] += object->position->array[2][0];
+
         freeMatrice(interComputation1);
         freeMatrice(interComputation2);
 
@@ -111,7 +116,7 @@ Matrice_t **getProjection(camera_t* camera, object_t *object)
         freeMatrice(interComputation1);
 
         //HOMOGENEOUS COORDINATES
-        double display_surface[3] = {0,0,-100.0};
+        double display_surface[3] = {0,0,180.0};
         Matrice_t* homogeneous_matrix = identity_matrix(3);
         homogeneous_matrix->array[0][2] = display_surface[0]/display_surface[2];
         homogeneous_matrix->array[1][2] = display_surface[1]/display_surface[2];
@@ -152,6 +157,21 @@ void rotateY(object_t *object, double angle)
 void rotateZ(object_t *object, double angle)
 {
     object->rotation->array[2][0]+=angle;
+}
+
+void translateX(object_t *object, double displacement)
+{
+    object->position->array[0][0]+=displacement;
+}
+
+void translateY(object_t *object, double displacement)
+{
+    object->position->array[1][0]+=displacement;
+}
+
+void translateZ(object_t *object, double displacement)
+{
+    object->position->array[2][0]+=displacement;
 }
 
 static Matrice_t** makeVertices(double coordinates[][3], int n_vertices)

@@ -51,4 +51,8 @@ void rotateX(object_t* object, double angle);
 void rotateY(object_t* object, double angle);
 void rotateZ(object_t* object, double angle);
 
+void translateX(object_t* object, double displacement);
+void translateY(object_t* object, double displacement);
+void translateZ(object_t* object, double displacement);
+
 #endif

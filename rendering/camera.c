@@ -42,3 +42,33 @@ void setRotation(camera_t *camera, int x, int y, int z)
     camera->rotation->array[1][0] = y;
     camera->rotation->array[2][0] = z;
 }
+
+void rotate_X_camera(camera_t *camera, double angle)
+{
+    camera->rotation->array[0][0]+=angle;
+}
+
+void rotate_Y_camera(camera_t *camera, double angle)
+{
+    camera->rotation->array[1][0]+=angle;
+}
+
+void rotate_Z_camera(camera_t *camera, double angle)
+{
+    camera->rotation->array[2][0]+=angle;
+}
+
+void translate_X_camera(camera_t *camera, double displacement)
+{
+    camera->position->array[0][0]+=displacement;
+}
+
+void translate_Y_camera(camera_t *camera, double displacement)
+{
+    camera->position->array[1][0]+=displacement;
+}
+
+void translate_Z_camera(camera_t *camera, double displacement)
+{
+    camera->position->array[2][0]+=displacement;
+}

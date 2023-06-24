@@ -13,7 +13,7 @@ int main()
 {
     int status = EXIT_FAILURE;
 
-    if (SDL_Init(SDL_INIT_VIDEO)!=0) {
+    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_EVENTS)!=0) {
         fprintf(stderr, "Erreur SDL_Init : %s", SDL_GetError()); //Envoie l'erreur dans le flux d'erreur standard stderr
         goto Quit;
     }
@@ -45,7 +45,7 @@ int main()
         {0,4},{2,6},{3,7},{1,5}
     };
 
-    int camera_position[3] = {0,0,-160};
+    int camera_position[3] = {0,0,-100};
     camera_t* camera = init_camera(camera_position, rotation);
     if(camera==NULL) fprintf(stderr, "Erreur lords de l'initialisation de la caméra");
 
@@ -54,6 +54,7 @@ int main()
     
     SDL_Event event;
     SDL_bool quit = SDL_FALSE;
+    Uint8* clavier;
     while(!quit)
     {
         Uint64 t1 = SDL_GetTicks64();
@@ -65,6 +66,13 @@ int main()
             fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
             goto Quit;
         }
+
+        SDL_PumpEvents();
+        clavier = SDL_GetKeyboardState(NULL);
+        if (clavier[SDL_SCANCODE_W]) translate_Z_camera(camera, 10);
+        if (clavier[SDL_SCANCODE_S]) translate_Z_camera(camera, -10);
+        if (clavier[SDL_SCANCODE_A]) translate_X_camera(camera, -10);
+        if (clavier[SDL_SCANCODE_D]) translate_X_camera(camera, 10);
 
         while(SDL_PollEvent(&event))
             if(event.type == SDL_QUIT) quit = SDL_TRUE;
