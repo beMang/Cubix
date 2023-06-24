@@ -17,6 +17,14 @@ camera_t* init_camera(int position[3], int rotation[3])
     return camera;
 }
 
+void freeCamera(camera_t *camera)
+{
+    if(camera==NULL) return;
+    freeMatrice(camera->position);
+    freeMatrice(camera->rotation);
+    free(camera);
+}
+
 void setPosition(camera_t *camera, int x, int y, int z)
 {
     if(camera==NULL || camera->position==NULL) fprintf(stderr, "Camera pas initialisée correctement");

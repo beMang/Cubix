@@ -24,6 +24,13 @@ typedef struct camera
 camera_t* init_camera(int position[3], int rotation[3]);
 
 /**
+ * @brief libère un pointeur pointant vers une caméra
+ * 
+ * @param camera 
+ */
+void freeCamera(camera_t* camera);
+
+/**
  * @brief Set the position of the camera
  * 
  * @param camera 

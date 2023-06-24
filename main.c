@@ -5,7 +5,7 @@
 #include "rendering/rendering.h"
 #include "rendering/camera.h"
 
-#define WINDOW_WIDTH 800
+#define WINDOW_WIDTH 480
 #define WINDOW_HEIGHT 480
 #define TARGET_FPS 60.0
 
@@ -30,13 +30,14 @@ int main()
 
     SDL_Color orange = {255, 127, 40, 255};
     SDL_Color red = {255,0,0,255};
+    SDL_Color blue = {30,144,255, 255};
 
-    int position[3] = {15,15,15};
+    int position[3] = {0,0,0};
     int rotation[3] = {0,0,0};
 
     double vertices[][3] = {
-        {-5,-5,-5},{5,-5,-5},{-5,5,-5},{5,5,-5},
-        {-5,-5,5},{5,-5,5},{-5,5,5},{5,5,5}
+        {-50,-50,-50},{50,-50,-50},{-50,50,-50},{50,50,-50},
+        {-50,-50,50},{50,-50,50},{-50,50,50},{50,50,50}
     };
     int edge[][2] = {
         {0,1},{1,3},{3,2},{2,0},
@@ -44,7 +45,7 @@ int main()
         {0,4},{2,6},{3,7},{1,5}
     };
 
-    int camera_position[3] = {7,0,-2};
+    int camera_position[3] = {0,0,-160};
     camera_t* camera = init_camera(camera_position, rotation);
     if(camera==NULL) fprintf(stderr, "Erreur lords de l'initialisation de la caméra");
 
@@ -55,7 +56,7 @@ int main()
     SDL_bool quit = SDL_FALSE;
     while(!quit)
     {
-        Uint32 t1 = SDL_GetTicks64();
+        Uint64 t1 = SDL_GetTicks64();
         if(SDL_SetRenderDrawColor(renderer, orange.r, orange.g, orange.b, orange.a)!=0) {
             fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
             goto Quit;
@@ -68,13 +69,13 @@ int main()
         while(SDL_PollEvent(&event))
             if(event.type == SDL_QUIT) quit = SDL_TRUE;
 
-        rotateX(cube, 0.03);
+        rotateY(cube, 0.03);
 
-        draw_object(renderer, camera, &red, cube);
+        draw_object(renderer, camera, &blue, cube);
         SDL_RenderPresent(renderer);
 
         SDL_Delay((int)(1/TARGET_FPS*1000));
-        Uint32 t2 = SDL_GetTicks64();
+        Uint64 t2 = SDL_GetTicks64();
         float time = ((float) (t2-t1))/1000;
         printf("fps : %f.1 \n", 1/time);
     }
@@ -82,6 +83,7 @@ int main()
 
 Quit:
     freeObject(cube);
+    freeCamera(camera);
     if (window!=NULL) SDL_DestroyWindow(window);
     if (renderer!=NULL) SDL_DestroyRenderer(renderer);
     SDL_Quit();

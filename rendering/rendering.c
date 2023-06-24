@@ -41,10 +41,10 @@ void draw_object(SDL_Renderer* renderer, camera_t* camera, SDL_Color* color, obj
         fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
         return;
     }
-    Matrice_t** projected_vertices = getProjection(camera, obj, 120.0);
+    Matrice_t** projected_vertices = getProjection(camera, obj);
     for (int i = 0; i < obj->n_vertices; i++)
     {
-        fat_point(renderer, projected_vertices[i]->array[0][0], projected_vertices[i]->array[1][0], 5);
+        fat_point(renderer, projected_vertices[i]->array[0][0], projected_vertices[i]->array[1][0], 4);
     }
     for (int i = 0; i < obj->n_edges; i++)
     {
@@ -74,7 +74,7 @@ void draw_square(SDL_Renderer* renderer, SDL_Color* color){
     point[2].x = 200;
     point[2].y = 200;
     point[3].x = 100;
-    point[3].y = 200;   
+    point[3].y = 200;
     point[4].x = 100;
     point[4].y = 100;
     SDL_RenderDrawLines(renderer, point, 5);
