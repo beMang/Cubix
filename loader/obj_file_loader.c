@@ -44,6 +44,10 @@ object_t *loadObject(char *fileName, double scale)
     int* file_info = countVerticesAndEdge(fileName);
     int n_vertice = file_info[0];
     int n_edge = file_info[1];
+    free(file_info);
+
+    //printf("Vertex count : %d\n", n_vertice);
+    //printf("Edge count : %d\n", n_edge);
 
     double vertices[n_vertice][3];
     int edges[n_edge][2];
@@ -69,21 +73,21 @@ object_t *loadObject(char *fileName, double scale)
             }
             current_vertice++;
         } else if (*occurence==*"f") {
-            //WORKS ONLY FOR 4 EDGE => ADAPT FOR TRIANGLES LATER !
-            int temp_edge[4];
-            for (int i = 0; i < 4; i++)
+            //WORK ONLY WITH TRIANGLE !
+            int temp_edge[3];
+            for (int i = 0; i < 3; i++)
             {
                 occurence = strtok(NULL, " ");
                 temp_edge[i] = atoi(occurence)-1;
             }
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
                 edges[current_edge][0] = temp_edge[i];
                 edges[current_edge][1] = temp_edge[i+1];
                 current_edge++;
             }
             edges[current_edge][0] = temp_edge[0];
-            edges[current_edge][1] = temp_edge[3];
+            edges[current_edge][1] = temp_edge[2];
             current_edge++;
         }
         if (fgets(buf, MAX, input)==NULL) break;

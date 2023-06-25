@@ -2,6 +2,7 @@
 #include "camera.h"
 #include <stdlib.h>
 #include "object.h"
+#include <stdbool.h>
 
 #ifndef WINDOW_WIDTH
 #define WINDOW_WIDTH 800
@@ -42,9 +43,13 @@ void draw_object(SDL_Renderer* renderer, camera_t* camera, SDL_Color* color, obj
         return;
     }
     Matrice_t** projected_vertices = getProjection(camera, obj);
-    for (int i = 0; i < obj->n_vertices; i++)
-    {
-        fat_point(renderer, projected_vertices[i]->array[0][0], projected_vertices[i]->array[1][0], 4);
+
+    bool render_vertice = false;
+    if(render_vertice){
+        for (int i = 0; i < obj->n_vertices; i++)
+        {
+            fat_point(renderer, projected_vertices[i]->array[0][0], projected_vertices[i]->array[1][0], 4);
+        }
     }
     for (int i = 0; i < obj->n_edges; i++)
     {

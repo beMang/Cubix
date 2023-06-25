@@ -8,7 +8,7 @@
 
 #define WINDOW_WIDTH 480
 #define WINDOW_HEIGHT 480
-#define TARGET_FPS 400.0
+#define TARGET_FPS 100.0
 
 int main()
 {
@@ -33,7 +33,7 @@ int main()
     SDL_Color red = {255,0,0,255};
     SDL_Color blue = {30,144,255, 255};
 
-    int position[3] = {0,0,0};
+    int position[3] = {100,0,50};
     int rotation[3] = {0,0,0};
 
     double vertices[][3] = {
@@ -53,8 +53,9 @@ int main()
     object_t* cube = initialiseObject(position, rotation, vertices, 8, edge, 12);
     if(cube==NULL) fprintf(stderr, "Erreur lords de l'initialisation d'un objet");
 
-    object_t* custom_object = loadObject("sono.obj", 50.0);
-    rotateY(custom_object, -90);
+    object_t* custom_object = loadObject("model/unicorn.obj", 2.0);
+    translate_Y_camera(custom_object, 50);
+    rotate_Y_camera(custom_object, 3.14/2);
     
     SDL_Event event;
     SDL_bool quit = SDL_FALSE;
@@ -73,22 +74,26 @@ int main()
 
         SDL_PumpEvents();
         clavier = SDL_GetKeyboardState(NULL);
-        if (clavier[SDL_SCANCODE_W]) translate_Z_camera(camera, 10);
-        if (clavier[SDL_SCANCODE_S]) translate_Z_camera(camera, -10);
-        if (clavier[SDL_SCANCODE_A]) translate_X_camera(camera, -10);
-        if (clavier[SDL_SCANCODE_D]) translate_X_camera(camera, 10);
+        double speed = 2.0;
+        if (clavier[SDL_SCANCODE_W]) translate_Z_camera(camera, speed);
+        if (clavier[SDL_SCANCODE_S]) translate_Z_camera(camera, -speed);
+        if (clavier[SDL_SCANCODE_A]) translate_X_camera(camera, -speed);
+        if (clavier[SDL_SCANCODE_D]) translate_X_camera(camera, speed);
+        if(clavier[SDL_SCANCODE_LCTRL]) translate_Y_camera(camera, speed);
+        if(clavier[SDL_SCANCODE_LSHIFT]) translate_Y_camera(camera, -speed);
 
         while(SDL_PollEvent(&event))
             if(event.type == SDL_QUIT) quit = SDL_TRUE;
 
-        rotateY(cube, 0.03);
+        //rotateY(cube, 0.03);
+        //rotateY(custom_object, 0.03);
 
-        //draw_object(renderer, camera, &blue, cube);
+        draw_object(renderer, camera, &blue, cube);
         draw_object(renderer, camera, &red, custom_object);
 
         SDL_RenderPresent(renderer);
 
-        SDL_Delay((int)(1/TARGET_FPS*1000));
+        //SDL_Delay((int)(1/TARGET_FPS*1000));
         Uint64 t2 = SDL_GetTicks64();
         float time = ((float) (t2-t1))/1000;
         //printf("fps : %f.1 \n", 1/time); //SHOW FPS COUNTER IN TERMINAL

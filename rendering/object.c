@@ -65,8 +65,9 @@ void print_object(object_t *object)
     printf("\nArêtes :");
     for (int i = 0; i < object->n_edges; i++)
     {
-        printf("(%d, %d)\n", object->edges[i][0], object->edges[i][1]);
+        printf("(%d, %d) - ", object->edges[i][0], object->edges[i][1]);
     }
+    printf("\n");
 }
 
 Matrice_t **getProjection(camera_t* camera, object_t *object)
