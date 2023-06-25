@@ -4,10 +4,11 @@
 #include "rendering/object.h"
 #include "rendering/rendering.h"
 #include "rendering/camera.h"
+#include "loader/obj_file_loader.h"
 
 #define WINDOW_WIDTH 480
 #define WINDOW_HEIGHT 480
-#define TARGET_FPS 60.0
+#define TARGET_FPS 400.0
 
 int main()
 {
@@ -51,6 +52,9 @@ int main()
 
     object_t* cube = initialiseObject(position, rotation, vertices, 8, edge, 12);
     if(cube==NULL) fprintf(stderr, "Erreur lords de l'initialisation d'un objet");
+
+    object_t* custom_object = loadObject("sono.obj", 50.0);
+    rotateY(custom_object, -90);
     
     SDL_Event event;
     SDL_bool quit = SDL_FALSE;
@@ -79,19 +83,22 @@ int main()
 
         rotateY(cube, 0.03);
 
-        draw_object(renderer, camera, &blue, cube);
+        //draw_object(renderer, camera, &blue, cube);
+        draw_object(renderer, camera, &red, custom_object);
+
         SDL_RenderPresent(renderer);
 
         SDL_Delay((int)(1/TARGET_FPS*1000));
         Uint64 t2 = SDL_GetTicks64();
         float time = ((float) (t2-t1))/1000;
-        printf("fps : %f.1 \n", 1/time);
+        //printf("fps : %f.1 \n", 1/time); //SHOW FPS COUNTER IN TERMINAL
     }
     status=EXIT_SUCCESS;
 
 Quit:
     freeObject(cube);
     freeCamera(camera);
+    freeObject(custom_object);
     if (window!=NULL) SDL_DestroyWindow(window);
     if (renderer!=NULL) SDL_DestroyRenderer(renderer);
     SDL_Quit();
