@@ -127,8 +127,8 @@ Matrice_t **getProjection(camera_t* camera, object_t *object)
         freeMatrice(interComputation2);
 
         //SCALE BY THE HOMOGENEOUS COORDINATE
-        (*projected_vertices)->array[0][0] = (*projected_vertices)->array[0][0]/(*projected_vertices)->array[2][0]+240; //x coordinate
-        (*projected_vertices)->array[1][0] = (*projected_vertices)->array[1][0]/(*projected_vertices)->array[2][0]+240; //y coordinate
+        (*projected_vertices)->array[0][0] = (*projected_vertices)->array[0][0]/(*projected_vertices)->array[2][0]+camera->width/2; //x coordinate
+        (*projected_vertices)->array[1][0] = (*projected_vertices)->array[1][0]/(*projected_vertices)->array[2][0]+camera->height/2; //y coordinate
 
         projected_vertices++;
     }

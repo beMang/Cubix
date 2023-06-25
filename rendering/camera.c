@@ -2,6 +2,7 @@
 #include "../math/matrice.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 camera_t* init_camera(int position[3], int rotation[3], int height, int width)
 {
@@ -63,7 +64,8 @@ void rotate_Z_camera(camera_t *camera, double angle)
 
 void translate_X_camera(camera_t *camera, double displacement)
 {
-    camera->position->array[0][0]+=displacement;
+    camera->position->array[0][0]+=displacement*cos(camera->rotation->array[1][0]);
+    camera->position->array[2][0]+=displacement*sin(camera->rotation->array[1][0]);
 }
 
 void translate_Y_camera(camera_t *camera, double displacement)
@@ -73,5 +75,6 @@ void translate_Y_camera(camera_t *camera, double displacement)
 
 void translate_Z_camera(camera_t *camera, double displacement)
 {
-    camera->position->array[2][0]+=displacement;
+    camera->position->array[2][0]+=displacement*cos(camera->rotation->array[1][0]);
+    camera->position->array[0][0]-=displacement*sin(camera->rotation->array[1][0]);
 }
