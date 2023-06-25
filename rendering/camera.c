@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-camera_t* init_camera(int position[3], int rotation[3])
+camera_t* init_camera(int position[3], int rotation[3], int height, int width)
 {
     camera_t* camera = malloc(sizeof(camera_t));
     if (camera==NULL) return NULL;
@@ -13,6 +13,9 @@ camera_t* init_camera(int position[3], int rotation[3])
 
     camera->rotation = initialiseMatrice(3,1,0);
     setRotation(camera, rotation[0], rotation[1], rotation[2]);
+
+    camera->height = height;
+    camera->width = width;
 
     return camera;
 }

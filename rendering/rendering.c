@@ -38,19 +38,27 @@ static void fat_point(SDL_Renderer* renderer, int x, int y, int size){
 }
 
 void draw_object(SDL_Renderer* renderer, camera_t* camera, SDL_Color* color, object_t* obj){
+    Matrice_t** projected_vertices = getProjection(camera, obj);
+
+    bool render_vertice = true;
+    SDL_Color black = {0,0,0,255};
+    if(SDL_SetRenderDrawColor(renderer, black.r, black.g, black.b, black.a)!=0) {
+        fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
+        return;
+    }
+
+    if(render_vertice){
+        for (int i = 0; i < obj->n_vertices; i++)
+        {
+            fat_point(renderer, projected_vertices[i]->array[0][0], projected_vertices[i]->array[1][0], 3);
+        }
+    }
+
     if(SDL_SetRenderDrawColor(renderer, color->r, color->g, color->b, color->a)!=0) {
         fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
         return;
     }
-    Matrice_t** projected_vertices = getProjection(camera, obj);
 
-    bool render_vertice = false;
-    if(render_vertice){
-        for (int i = 0; i < obj->n_vertices; i++)
-        {
-            fat_point(renderer, projected_vertices[i]->array[0][0], projected_vertices[i]->array[1][0], 4);
-        }
-    }
     for (int i = 0; i < obj->n_edges; i++)
     {
         int x1 = projected_vertices[obj->edges[i][0]]->array[0][0];

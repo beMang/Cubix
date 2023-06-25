@@ -117,7 +117,7 @@ Matrice_t **getProjection(camera_t* camera, object_t *object)
         freeMatrice(interComputation1);
 
         //HOMOGENEOUS COORDINATES
-        double display_surface[3] = {0,0,240.0};
+        double display_surface[3] = {0,0,camera->width};
         Matrice_t* homogeneous_matrix = identity_matrix(3);
         homogeneous_matrix->array[0][2] = display_surface[0]/display_surface[2];
         homogeneous_matrix->array[1][2] = display_surface[1]/display_surface[2];

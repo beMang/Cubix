@@ -11,6 +11,9 @@ typedef struct camera
 {
     Matrice_t* position;
     Matrice_t* rotation;
+
+    int height;
+    int width;
 } camera_t;
 
 /**
@@ -21,7 +24,7 @@ typedef struct camera
  * @param rotation 
  * @return int 0 si succès 0 sinon
  */
-camera_t* init_camera(int position[3], int rotation[3]);
+camera_t* init_camera(int position[3], int rotation[3], int height, int width);
 
 /**
  * @brief libère un pointeur pointant vers une caméra
