@@ -13,7 +13,7 @@ static void fat_point(SDL_Renderer* renderer, int x, int y, int size){
     int left = x-size/2;
 
     SDL_Rect rectangle = {left, up, size, size};
-    if (SDL_RenderFillRect(renderer, &rectangle)==-1){
+    if (SDL_RenderFillRect(renderer, &rectangle)!=0){
         fprintf(stderr, "Erreur de rendu fat_point : %s", SDL_GetError());
         return;
     }

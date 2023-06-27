@@ -2,10 +2,10 @@
 #include <SDL2/SDL.h>
 #include "../rendering/camera.h"
 
-void handleKeyboard(Uint8* clavier, camera_t* camera, SDL_bool* quit, SDL_Event event)
+void handleKeyboard(camera_t* camera, SDL_bool* quit, SDL_Event event)
 {
     SDL_PumpEvents();
-    clavier = SDL_GetKeyboardState(NULL);
+    const Uint8* clavier = SDL_GetKeyboardState(NULL);
 
     double speed = 1.0;
 
@@ -40,7 +40,7 @@ void initMouse(SDL_Window* window, SDL_Renderer* renderer)
     int w_width = 0;
     int w_height = 0;
 
-    SDL_GetRendererOutputSize(renderer, &w_width, &w_height);
+    if(SDL_GetRendererOutputSize(renderer, &w_width, &w_height)!=0) fprintf(stderr, "Erreur de SDL_SetRenderDrawColor : %s", SDL_GetError());
     printf("%d\n", w_width);
     SDL_WarpMouseInWindow(window, w_width/2, w_height/2);
     int x = 0;
