@@ -93,6 +93,7 @@ int main()
     status=EXIT_SUCCESS;
 
 Quit:
+    free(clavier);
     freeObject(cube);
     freeObject(custom_object);
     freeCamera(camera);

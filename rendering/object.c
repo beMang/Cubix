@@ -19,13 +19,11 @@ object_t* initialiseObject(int position[3], int rotation[3], double vertices[][3
     result->edges = makeEdges(edges, n_edge);
     result->vertices = makeVertices(vertices, n_vertices);
     
-    result->position = malloc(sizeof(Matrice_t*));
     result->position = initialiseMatrice(3,1,0);
     result->position->array[0][0] = position[0];
     result->position->array[1][0] = position[1];
     result->position->array[2][0] = position[2];
 
-    result->rotation = malloc(sizeof(Matrice_t*));
     result->rotation = initialiseMatrice(3,1,0);
     result->rotation->array[0][0] = rotation[0];
     result->rotation->array[1][0] = rotation[1];
@@ -88,8 +86,8 @@ Matrice_t **getProjection(camera_t* camera, object_t *object)
     for (int i = 0; i < object->n_vertices; i++)
     {
         //Utilisé pour calculer les résultats intermédiaires, un peu moche il faudrait faire mieux pour ne pas devoir free et malloc à chaque résultat intermédiaire.
-        Matrice_t* interComputation1;
-        Matrice_t* interComputation2;
+        Matrice_t* interComputation1 = NULL;
+        Matrice_t* interComputation2 = NULL;
 
         //Rotation of the object
         multMatrice(rotationZ, object->vertices[i], &interComputation1);
@@ -106,7 +104,7 @@ Matrice_t **getProjection(camera_t* camera, object_t *object)
 
         //CAMERA TRANSFORM
         subMatrice(*projected_vertices, camera->position, &interComputation1); //Position of matrix
-        free(*projected_vertices);
+        freeMatrice(*projected_vertices);
 
         //3 rotations of the camera :
         multMatrice(cameraRotationZ, interComputation1, &interComputation2);
@@ -125,6 +123,7 @@ Matrice_t **getProjection(camera_t* camera, object_t *object)
 
         multMatrice(homogeneous_matrix, interComputation2, projected_vertices);
         freeMatrice(interComputation2);
+        freeMatrice(homogeneous_matrix);
 
         //SCALE BY THE HOMOGENEOUS COORDINATE
         (*projected_vertices)->array[0][0] = (*projected_vertices)->array[0][0]/(*projected_vertices)->array[2][0]+camera->width/2; //x coordinate
