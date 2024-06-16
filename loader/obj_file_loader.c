@@ -6,7 +6,7 @@
 
 #define MAX 100
 
-int* countVerticesAndEdge(char *fileName)
+int* countVerticesAndFaces(char *fileName)
 {
     int* result = malloc(2*sizeof(int));
 
@@ -15,42 +15,41 @@ int* countVerticesAndEdge(char *fileName)
 
     fgets(buf, MAX, input);
     int vertice_counter = 0;
-    int edge_counter = 0;
+    int face_counter = 0;
 
     while (buf!=NULL)
     {
         char* occurence = strtok(buf, " ");
         if (*occurence==*"v") vertice_counter++;
         if (*occurence==*"f") {
-            occurence = strtok(NULL, " ");
-            while (occurence!=NULL)
-            {
-                edge_counter++;
-                occurence = strtok(NULL, " ");
-            }
+            face_counter++;
         }
         if (fgets(buf, MAX, input)==NULL) break;
     }
     fclose(input);
     
     result[0] = vertice_counter;
-    result[1] = edge_counter;
+    result[1] = face_counter;
 
     return result;
 }
 
 object_t *loadObject(char *fileName, double scale)
 {
-    int* file_info = countVerticesAndEdge(fileName);
+    int* file_info = countVerticesAndFaces(fileName);
     int n_vertice = file_info[0];
-    int n_edge = file_info[1];
+    int n_faces = file_info[1];
     free(file_info);
 
-    //printf("Vertex count : %d\n", n_vertice);
-    //printf("Edge count : %d\n", n_edge);
+    printf("Number of faces : %d\n", n_faces);
 
     double vertices[n_vertice][3];
-    int edges[n_edge][2];
+    face_t** faces = malloc(sizeof(face_t*)*n_faces);
+    for (int i = 0; i < n_faces; i++)
+    {
+        faces[i] = NULL;
+    }
+
     int default_position[3] = {0,0,0};
     int default_rotation[3] = {0,0,0};
 
@@ -60,7 +59,7 @@ object_t *loadObject(char *fileName, double scale)
     fgets(buf, MAX, input);
 
     int current_vertice = 0;
-    int current_edge = 0;
+    int current_face = 0;
 
     while (buf!=NULL)
     {
@@ -73,26 +72,21 @@ object_t *loadObject(char *fileName, double scale)
             }
             current_vertice++;
         } else if (*occurence==*"f") {
-            //WORK ONLY WITH TRIANGLE !
-            int temp_edge[3];
-            for (int i = 0; i < 3; i++)
+            int buffer_size = 6;
+            int temp_edge[buffer_size]; //faces with max 5 vertices
+            int n_vertices = 0;
+            for (int i = 0; i < buffer_size; i++)
             {
                 occurence = strtok(NULL, " ");
+                if(occurence==NULL) break;
                 temp_edge[i] = atoi(occurence)-1;
+                n_vertices++;
             }
-            for (int i = 0; i < 2; i++)
-            {
-                edges[current_edge][0] = temp_edge[i];
-                edges[current_edge][1] = temp_edge[i+1];
-                current_edge++;
-            }
-            edges[current_edge][0] = temp_edge[0];
-            edges[current_edge][1] = temp_edge[2];
-            current_edge++;
+            faces[current_face] = makeFace(temp_edge, n_vertices);
+            current_face++;
         }
         if (fgets(buf, MAX, input)==NULL) break;
     }
     fclose(input);
-
-    return initialiseObject(default_position, default_rotation, vertices, n_vertice, edges, n_edge);
+    return initialiseObject(default_position, default_rotation, vertices, n_vertice, faces, n_faces);
 }

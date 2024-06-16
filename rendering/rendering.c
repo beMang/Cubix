@@ -44,18 +44,32 @@ void draw_object(SDL_Renderer* renderer, camera_t* camera, SDL_Color* color, obj
         return;
     }
 
-    for (int i = 0; i < obj->n_edges; i++)
+    for (int i = 0; i < obj->n_faces; i++)
     {
-        int x1 = projected_vertices[obj->edges[i][0]]->array[0][0];
-        int y1 = projected_vertices[obj->edges[i][0]]->array[1][0];
+        for(int j = 0; j < obj->faces[i]->n_vertices-1; j++){
+            int x1 = projected_vertices[obj->faces[i]->vertices[j]]->array[0][0];
+            int y1 = projected_vertices[obj->faces[i]->vertices[j]]->array[1][0];
+            if(out_of_bound(camera, x1,y1)) continue;
+
+            int x2 = projected_vertices[obj->faces[i]->vertices[j+1]]->array[0][0];
+            int y2 = projected_vertices[obj->faces[i]->vertices[j+1]]->array[1][0];
+            if(out_of_bound(camera, x2, y2)) continue;
+
+            if(SDL_RenderDrawLine(renderer, x1, y1, x2, y2)!=0) printf("Error line");
+        }
+
+        //Draw line between last and first point
+        int x1 = projected_vertices[obj->faces[i]->vertices[obj->faces[i]->n_vertices-1]]->array[0][0];
+        int y1 = projected_vertices[obj->faces[i]->vertices[obj->faces[i]->n_vertices-1]]->array[1][0];
         if(out_of_bound(camera, x1,y1)) continue;
 
-        int x2 = projected_vertices[obj->edges[i][1]]->array[0][0];
-        int y2 = projected_vertices[obj->edges[i][1]]->array[1][0];
+        int x2 = projected_vertices[obj->faces[i]->vertices[0]]->array[0][0];
+        int y2 = projected_vertices[obj->faces[i]->vertices[0]]->array[1][0];
         if(out_of_bound(camera, x2, y2)) continue;
 
         if(SDL_RenderDrawLine(renderer, x1, y1, x2, y2)!=0) printf("Error line");
     }
+
     for (int i = 0; i < obj->n_vertices; i++)
     {
         freeMatrice(projected_vertices[i]);

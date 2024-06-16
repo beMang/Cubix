@@ -11,7 +11,7 @@
  * @param fileName le fichier à analyser
  * @return int le nombre de vertice
  */
-int* countVerticesAndEdge(char* fileName);
+int* countVerticesAndFaces(char* fileName);
 
 /**
  * @brief charge un objet avec un fichier obj

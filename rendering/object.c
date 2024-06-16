@@ -3,21 +3,24 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "object.h"
+#include "face.h"
 #include "../math/matrice.h"
 #include "camera.h"
 
 //HELPER FUNCTIONS
 static Matrice_t** makeVertices(double coordinates[][3], int n_vertices);
-static int** makeEdges(int edges[][2], int n_edge);
 
-object_t* initialiseObject(int position[3], int rotation[3], double vertices[][3], int n_vertices, int edges[][2], int n_edge)
+object_t* initialiseObject(int position[3], int rotation[3], double vertices[][3], int n_vertices, face_t** faces, int n_face)
 {
     object_t* result = malloc(sizeof(object_t));
     if(result==NULL) return NULL;
 
-    result->n_edges = n_edge;
+    result->n_faces = n_face;
     result->n_vertices = n_vertices;
-    result->edges = makeEdges(edges, n_edge);
+    result->faces = malloc(sizeof(face_t*)*n_face);
+    if (result->faces==NULL) return NULL;
+    memcpy(result->faces, faces, sizeof(face_t*)*n_face);
+    
     result->vertices = makeVertices(vertices, n_vertices);
     
     result->position = initialiseMatrice(3,1,0);
@@ -36,11 +39,11 @@ object_t* initialiseObject(int position[3], int rotation[3], double vertices[][3
 void freeObject(object_t *obj)
 {
     if (obj==NULL) return;
-    for (int i = 0; i < obj->n_edges; i++)
+    for (int i = 0; i < obj->n_faces; i++)
     {
-        free(obj->edges[i]);
+        free(obj->faces[i]);
     }
-    free(obj->edges);
+    free(obj->faces);
 
     for (int i = 0; i < obj->n_vertices; i++)
     {
@@ -54,17 +57,17 @@ void freeObject(object_t *obj)
 
 void print_object(object_t *object)
 {
-    printf("Nombre de points : %d       Nombre d'arête : %d\n", object->n_vertices, object->n_edges);
+    printf("Nombre de points : %d  Nombre d'arête : %d\n", object->n_vertices, object->n_faces);
 
     printf("Points : \n");
     for (int i = 0; i < object->n_vertices; i++)
     {
         printf("x : %f - y : %f - z : %f\n", (object->vertices[i])->array[0][0], (object->vertices[i])->array[1][0], (object->vertices[i])->array[2][0]);
     }
-    printf("\nArêtes :");
-    for (int i = 0; i < object->n_edges; i++)
+    printf("\nFaces :");
+    for (int i = 0; i < object->n_faces; i++)
     {
-        printf("(%d, %d) - ", object->edges[i][0], object->edges[i][1]);
+        print_face(object->faces[i]);
     }
     printf("\n");
 }
@@ -222,18 +225,3 @@ static Matrice_t** makeVertices(double coordinates[][3], int n_vertices)
     return result;
 }
 
-static int** makeEdges(int edges[][2], int n_edge)
-{
-    int** result = malloc(sizeof(int*)*n_edge);
-    if(result==NULL) return NULL;
-
-    for (int i = 0; i < n_edge; i++)
-    {
-        result[i] = malloc(sizeof(int)*2);
-        if (result[i]==NULL) return NULL;
-
-        result[i][0] = edges[i][0];
-        result[i][1] = edges[i][1];
-    }
-    return result;
-}

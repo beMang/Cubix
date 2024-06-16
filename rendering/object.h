@@ -1,5 +1,6 @@
 #include "../math/matrice.h"
 #include "camera.h"
+#include "face.h"
 #include <stdbool.h>
 
 #ifndef _OBJECT_H_
@@ -17,20 +18,22 @@ typedef struct object
     Matrice_t** vertices;
     int n_vertices;
 
-    int** edges;
-    int n_edges;
+    face_t** faces;
+    int n_faces;
 } object_t;
 
 /**
- * @brief intialise un objet avec ses points et ses arêtes à afficher
+ * @brief intialise un objet avec ses points et ses faces
  * 
+ * @param position 
+ * @param rotation 
  * @param vertices 
  * @param n_vertices 
- * @param edges 
- * @param n_edge 
+ * @param faces 
+ * @param n_face 
  * @return object_t* 
  */
-object_t* initialiseObject(int position[3], int rotation[3], double vertices[][3], int n_vertices, int edges[][2], int n_edge);
+object_t* initialiseObject(int position[3], int rotation[3], double vertices[][3], int n_vertices, face_t** faces, int n_face);
 
 /**
  * @brief free an object to liberate memory
