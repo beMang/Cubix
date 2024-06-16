@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include "rendering/object.h"
 #include "rendering/rendering.h"
 #include "rendering/camera.h"
@@ -13,7 +14,7 @@
 
 int main()
 {
-    if(SDL_FALSE){
+    if(SDL_TRUE){
         SDL_version *version = malloc(sizeof(SDL_version));
         SDL_GetVersion(version);
         printf("SDL version : %d.%d.%d\n", version->major, version->minor, version->patch);
@@ -49,7 +50,7 @@ int main()
     SDL_Color red = {255,0,0,255};
     SDL_Color blue = {30,144,255, 255};
 
-    int position[3] = {100,0,50};
+    int position[3] = {0,0,250};
     int rotation[3] = {0,0,0};
 
     double vertices[][3] = {
@@ -62,7 +63,7 @@ int main()
         {0,4},{2,6},{3,7},{1,5}
     };
 
-    int camera_position[3] = {0,0,-100};
+    int camera_position[3] = {0,0,0};
     camera = init_camera(camera_position, rotation, WINDOW_HEIGHT, WINDOW_WIDTH);
     if(camera==NULL) fprintf(stderr, "Erreur lords de l'initialisation de la caméra");
 

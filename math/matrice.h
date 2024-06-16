@@ -33,6 +33,9 @@ int addMatrice(Matrice_t* m1, Matrice_t* m2, Matrice_t** result);
 int subMatrice(Matrice_t* m1, Matrice_t* m2, Matrice_t** result);
 int multMatrice(Matrice_t* m1, Matrice_t* m2, Matrice_t** result);
 
+double matrixNorm(Matrice_t* m);
+void matrixNormalize(Matrice_t* m);
+
 //BASIC MATRICES
 Matrice_t* identity_matrix(int size);
 Matrice_t* rotationX_matrix(double angle);

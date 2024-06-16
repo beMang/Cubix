@@ -20,6 +20,7 @@ static void fat_point(SDL_Renderer* renderer, int x, int y, int size){
 }
 
 void draw_object(SDL_Renderer* renderer, camera_t* camera, SDL_Color* color, object_t* obj){
+    if(!is_visible(obj, camera)) return;
     Matrice_t** projected_vertices = getProjection(camera, obj);
 
     bool render_vertice = true;
@@ -63,5 +64,5 @@ void draw_object(SDL_Renderer* renderer, camera_t* camera, SDL_Color* color, obj
 }
 
 static bool out_of_bound(camera_t* camera, int x, int y){
-    return (x>camera->width || y>camera->height);
+    return (x>camera->width || y>camera->height || x<0 || y<0);
 }

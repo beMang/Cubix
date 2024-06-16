@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include "object.h"
 #include "../math/matrice.h"
 #include "camera.h"
@@ -142,6 +143,35 @@ Matrice_t **getProjection(camera_t* camera, object_t *object)
     freeMatrice(cameraRotationZ);
 
     return projected_vertices;
+}
+
+Matrice_t* getCameraToObjectVector(camera_t* camera, object_t* object)
+{
+    Matrice_t* result = initialiseMatrice(3, 1, 0);
+    subMatrice(object->position, camera->position, &result);
+    matrixNormalize(result);
+    return result;
+}
+
+bool is_visible(object_t* object, camera_t* camera)
+{
+    Matrice_t* cameraToObject = getCameraToObjectVector(camera, object);
+    Matrice_t* cameraVector = getCameraVector(camera);
+
+    //dot product
+    double result = 0;
+    for (int i = 0; i < 3; i++)
+    {
+        result+=cameraToObject->array[i][0]*cameraVector->array[i][0];
+    }
+    //printf("Camera vector : %f %f %f\n", cameraVector->array[0][0], cameraVector->array[1][0], cameraVector->array[2][0]);
+    //printf("Camera to object vector : %f %f %f\n", cameraToObject->array[0][0], cameraToObject->array[1][0], cameraToObject->array[2][0]);
+
+    freeMatrice(cameraToObject);
+    freeMatrice(cameraVector);
+
+    if (result>0) return true;
+    return false;
 }
 
 void rotateX(object_t *object, double angle)

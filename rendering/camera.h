@@ -61,4 +61,6 @@ void translate_X_camera(camera_t* camera, double displacement);
 void translate_Y_camera(camera_t* camera, double displacement);
 void translate_Z_camera(camera_t* camera, double displacement);
 
+Matrice_t* getCameraVector(camera_t* camera);
+
 #endif

@@ -135,6 +135,31 @@ int multMatrice(Matrice_t *m1, Matrice_t *m2, Matrice_t** result)
     return 0;
 }
 
+double matrixNorm(Matrice_t* m)
+{
+    double result = 0;
+    for (int i = 0; i < m->rows; i++)
+    {
+        for (int j = 0; j < m->cols; j++)
+        {
+            result+=m->array[i][j]*m->array[i][j];
+        }
+    }
+    return sqrt(result);
+}
+
+void matrixNormalize(Matrice_t* m)
+{
+    double norm = matrixNorm(m);
+    for (int i = 0; i < m->rows; i++)
+    {
+        for (int j = 0; j < m->cols; j++)
+        {
+            m->array[i][j]/=norm;
+        }
+    }
+}
+
 Matrice_t *identity_matrix(int size)
 {
     Matrice_t* idendity = initialiseMatrice(size, size, 0);
