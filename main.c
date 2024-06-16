@@ -13,6 +13,12 @@
 
 int main()
 {
+    if(SDL_FALSE){
+        SDL_version *version = malloc(sizeof(SDL_version));
+        SDL_GetVersion(version);
+        printf("SDL version : %d.%d.%d\n", version->major, version->minor, version->patch);
+    }
+
     int status = EXIT_FAILURE;
     SDL_Renderer* renderer = NULL;
     SDL_Window* window = NULL;
@@ -27,7 +33,7 @@ int main()
         goto Quit;
     }
 
-    window = SDL_CreateWindow("Cubix", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+    window = SDL_CreateWindow("Cubix", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_VULKAN);
     if(window==NULL){
         fprintf(stderr, "Erreur de SDL_CreateWindow : %s", SDL_GetError());
         goto Quit;

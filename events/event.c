@@ -28,8 +28,8 @@ void handleMouse(camera_t* camera)
     int y = 0;
     SDL_GetRelativeMouseState(&x, &y);
 
-    double x_sensivity = 0.015;
-    double y_sensivity = 0.015;
+    double x_sensivity = 0.005;
+    double y_sensivity = 0.005;
 
     rotate_Y_camera(camera, -x_sensivity*x);
     rotate_X_camera(camera, y*y_sensivity);
