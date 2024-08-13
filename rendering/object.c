@@ -15,13 +15,17 @@ object_t* initialiseObject(int position[3], int rotation[3], double vertices[][3
     object_t* result = malloc(sizeof(object_t));
     if(result==NULL) return NULL;
 
-    result->n_faces = n_face;
     result->n_vertices = n_vertices;
+    result->vertices = makeVertices(vertices, n_vertices);
+
+    result->n_faces = n_face;
     result->faces = malloc(sizeof(face_t*)*n_face);
     if (result->faces==NULL) return NULL;
     memcpy(result->faces, faces, sizeof(face_t*)*n_face);
-    
-    result->vertices = makeVertices(vertices, n_vertices);
+    for (int i = 0; i < n_face; i++)
+    {
+        computeNormal(result->faces[i], result->vertices);
+    }
     
     result->position = initialiseMatrice(3,1,0);
     result->position->array[0][0] = position[0];
@@ -138,7 +142,7 @@ Matrice_t **getProjection(camera_t* camera, object_t *object)
     projected_vertices-=object->n_vertices;
 
     freeMatrice(rotationX);
-    freeMatrice(rotationY);
+    freeMatrice(rotationY);  
     freeMatrice(rotationZ);
 
     freeMatrice(cameraRotationX);
@@ -156,8 +160,9 @@ Matrice_t* getCameraToObjectVector(camera_t* camera, object_t* object)
     return result;
 }
 
-bool is_visible(object_t* object, camera_t* camera)
+bool isObjectVisible(object_t* object, camera_t* camera)
 {
+    return true;
     Matrice_t* cameraToObject = getCameraToObjectVector(camera, object);
     Matrice_t* cameraVector = getCameraVector(camera);
 

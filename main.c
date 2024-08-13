@@ -13,29 +13,6 @@
 #define WINDOW_HEIGHT 480
 #define TARGET_FPS 60.0
 
-object_t* loadCube()
-{
-    double vertices[][3] = {
-        {-50,-50,-50}, // 0
-        {50,-50,-50},  // 1
-        {-50,50,-50},  // 2
-        {50,50,-50},   // 3
-        {-50,-50,50},  // 4
-        {50,-50,50},   // 5
-        {-50,50,50},   // 6
-        {50,50,50}     // 7
-    };
-    face_t* face1 = makeFace((int[]){0, 1, 3, 2}, 4); // Front face
-    face_t* face2 = makeFace((int[]){4, 5, 7, 6}, 4); // Back face
-    face_t* face3 = makeFace((int[]){0, 4, 6, 2}, 4); // Left face
-    face_t* face4 = makeFace((int[]){1, 5, 7, 3}, 4); // Right face
-    face_t* face5 = makeFace((int[]){0, 1, 5, 4}, 4); // Bottom face
-    face_t* face6 = makeFace((int[]){2, 3, 7, 6}, 4); // Top face
-
-    face_t* faces[] = {face1, face2, face3, face4, face5, face6};
-    return initialiseObject((int[]){0,0,250}, (int[]){0,0,0}, vertices, 8, faces, 6);
-}
-
 int main()
 {
     if(SDL_TRUE){
@@ -77,12 +54,12 @@ int main()
     camera = init_camera((int[]){0,-100,-200}, (int[]){0,0,0}, WINDOW_HEIGHT, WINDOW_WIDTH);
     if(camera==NULL) fprintf(stderr, "Erreur lors de l'initialisation de la caméra");
 
-    cube = loadCube();
+    cube = loadObject("model/cube.obj", 50);
     if(cube==NULL) fprintf(stderr, "Erreur lors de l'initialisation d'un objet");
 
     custom_object = loadObject("model/unicorn.obj", 2.0);
-    translateY(custom_object, 50);
-    rotateY(custom_object, 3.14/2);
+    //translateY(custom_object, 50);
+    //rotateY(custom_object, 3.14/2);
     
     SDL_Event event;
     SDL_bool show_fps = SDL_FALSE;
@@ -107,10 +84,10 @@ int main()
         handleKeyboard(camera, &quit, event);
         handleMouse(camera);
 
-        rotateY(cube, 0.03);
+        //rotateY(cube, 0.03);
 
         draw_object(renderer, camera, &blue, cube);
-        draw_object(renderer, camera, &red, custom_object);
+        //draw_object(renderer, camera, &red, custom_object);
 
         SDL_RenderPresent(renderer);
 

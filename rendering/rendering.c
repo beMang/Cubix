@@ -46,6 +46,7 @@ void draw_object(SDL_Renderer* renderer, camera_t* camera, SDL_Color* color, obj
 
     for (int i = 0; i < obj->n_faces; i++)
     {
+        if(!isFaceVisible(obj->faces[i], camera)) continue;
         for(int j = 0; j < obj->faces[i]->n_vertices-1; j++){
             int x1 = projected_vertices[obj->faces[i]->vertices[j]]->array[0][0];
             int y1 = projected_vertices[obj->faces[i]->vertices[j]]->array[1][0];

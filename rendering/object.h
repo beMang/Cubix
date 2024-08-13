@@ -49,7 +49,7 @@ void freeObject(object_t* obj);
  */
 void print_object(object_t* object);
 
-bool is_visible(object_t* object, camera_t* camera);
+bool isObjectVisible(object_t* object, camera_t* camera);
 Matrice_t** getProjection(camera_t* camera, object_t* object);
 
 void rotateX(object_t* object, double angle);
