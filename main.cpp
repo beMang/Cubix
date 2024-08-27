@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
-#include <stdio.h>
+#include <iostream>
 #include <stdbool.h>
 #include "rendering/object.h"
 #include "rendering/face.h"
@@ -13,10 +13,10 @@
 #define WINDOW_HEIGHT 480
 #define TARGET_FPS 60.0
 
-int main()
+int main(int argc, char const *argv[])
 {
     if(SDL_TRUE){
-        SDL_version *version = malloc(sizeof(SDL_version));
+        SDL_version *version = (SDL_version*)malloc(sizeof(SDL_version));
         SDL_GetVersion(version);
         printf("SDL version : %d.%d.%d\n", version->major, version->minor, version->patch);
     }
@@ -28,6 +28,16 @@ int main()
     camera_t* camera = NULL;
     object_t* cube = NULL;
     object_t* custom_object = NULL;
+
+    //Some basic colors
+    SDL_Color orange = {255, 127, 40, 255};
+    SDL_Color red = {255,0,0,255};
+    SDL_Color blue = {30,144,255, 255};
+
+    //Some variables for event managing
+    SDL_Event event;
+    SDL_bool show_fps = SDL_FALSE;
+    SDL_bool quit = SDL_FALSE;
 
 
     if (SDL_Init(SDL_INIT_EVERYTHING)!=0) {
@@ -47,10 +57,6 @@ int main()
         goto Quit;
     }
 
-    SDL_Color orange = {255, 127, 40, 255};
-    SDL_Color red = {255,0,0,255};
-    SDL_Color blue = {30,144,255, 255};
-
     camera = init_camera((int[]){0,-100,-200}, (int[]){0,0,0}, WINDOW_HEIGHT, WINDOW_WIDTH);
     if(camera==NULL) fprintf(stderr, "Erreur lors de l'initialisation de la caméra");
 
@@ -61,9 +67,6 @@ int main()
     //translateY(custom_object, 50);
     //rotateY(custom_object, 3.14/2);
     
-    SDL_Event event;
-    SDL_bool show_fps = SDL_FALSE;
-    SDL_bool quit = SDL_FALSE;
     initMouse(window, renderer);
     while(!quit)
     {

@@ -1,11 +1,7 @@
-CC = gcc
+CC = g++
 
-main: ./math/operation.c ./math/matrice.c ./rendering/camera.c ./events/event.c ./rendering/face.c ./rendering/object.c ./loader/obj_file_loader.c ./rendering/rendering.c main.c -lm
+main: ./math/operation.cpp ./math/matrice.cpp ./rendering/camera.cpp ./events/event.cpp ./rendering/face.cpp ./rendering/object.cpp ./loader/obj_file_loader.cpp ./rendering/rendering.cpp main.cpp -lm
 	$(CC) $^ -Wall -Wextra $$(sdl2-config --cflags --libs) -g -o bin/main.bin
-
-tests: ./math/operation.c ./math/matrice.c ./rendering/face.c ./rendering/object.c ./rendering/camera.c
-	$(CC) ./tests/matrice_test.c $^ -Wall -Wextra -o bin/matrice.bin -lm
-	$(CC) ./tests/object_test.c $^ -Wall -Wextra -o bin/object.bin -lm
 
 run: main
 	./bin/main.bin

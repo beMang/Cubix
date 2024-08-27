@@ -6,6 +6,7 @@
 #include "face.h"
 #include "../math/matrice.h"
 #include "camera.h"
+#include "object.hpp"
 
 //HELPER FUNCTIONS
 static Matrice_t** makeVertices(double coordinates[][3], int n_vertices);
@@ -229,4 +230,3 @@ static Matrice_t** makeVertices(double coordinates[][3], int n_vertices)
     }
     return result;
 }
-

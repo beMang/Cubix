@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "obj_file_loader.h"
+#include "./obj_file_loader.h"
 #include "../rendering/object.h"
 
 #define MAX 100
