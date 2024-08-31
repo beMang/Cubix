@@ -26,10 +26,15 @@ namespace objects
         void set_surface_height(double height);
         void set_surface_width(double width);
 
+        //AUXILIARY
+        void print();
+
         //OPERATIONS
         void translateForward(double displacement);
         void translateRight(double displacement);
         void translateUp(double displacement);
+
+        Vector getCameraVector();
     };
     
 } // namespace rendering

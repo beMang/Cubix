@@ -68,9 +68,10 @@ namespace objects
 
     void Object::print()
     {
-        std::cout << "Position: ";
+        std::cout << "Object : \n";
+        std::cout << "\tPosition: ";
         position.print();
-        std::cout << "Rotation: ";
+        std::cout << "\tRotation: ";
         rotation.print();
     }
 } // namespace rendering

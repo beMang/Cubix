@@ -1,5 +1,6 @@
 #include "camera.hpp"
 #include <cmath>
+#include <cstdio>
 
 namespace objects
 {
@@ -8,7 +9,7 @@ namespace objects
         this->surface_height = surface_height;
         this->surface_width = surface_width;
         this->surface_center = position;
-        //CENTER SHOULD BE A BIT IN FRONT OF THE CAMERA
+        surface_center(0) += 1;
     }
 
     Camera::~Camera()
@@ -35,6 +36,19 @@ namespace objects
         this->surface_width = width;
     }
 
+    void Camera::print()
+    {
+        printf("Camera : \n");
+        printf("\tPosition : ");
+        this->position.print();
+        printf("\tRotation : ");
+        this->rotation.print();
+        printf("\tSurface Center : ");
+        this->surface_center.print();
+        printf("\tSurface Height : %f\n", this->surface_height);
+        printf("\tSurface Width : %f\n", this->surface_width);
+    }
+
     void Camera::translateForward(double displacement)
     {
         using namespace maths;
@@ -54,5 +68,22 @@ namespace objects
     void Camera::translateUp(double displacement)
     {
         this->position(1) += displacement;
+    }
+
+    Vector Camera::getCameraVector()
+    {
+        this->surface_center -= this->position;
+
+        Matrix rotationX = Matrix::rotationX_matrix(rotation(0));
+        Matrix rotationY = Matrix::rotationY_matrix(rotation(1));
+        Matrix rotationZ = Matrix::rotationZ_matrix(rotation(2));
+
+        Matrix result = this->surface_center;
+        result = rotationZ * result;
+        result = rotationY * result;
+        result = rotationX * result;
+
+        this->surface_center += this->position; // Reset the surface center
+        return result;
     }
 } // namespace rendering

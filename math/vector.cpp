@@ -58,5 +58,6 @@ namespace maths
         {
             printf(" %f |", (*this)(i));
         }
+        printf("\n");
     }
 } // namespace maths
