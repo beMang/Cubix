@@ -3,7 +3,8 @@
 
 #include <SDL2/SDL.h>
 #include "../objects/camera.hpp"
-#include "../rendering/abstract_render.hpp"
+#include "../rendering/sdl_render.hpp"
+#include "scene.hpp"
 
 namespace app
 {
@@ -18,7 +19,8 @@ namespace app
         bool quit;
 
         objects::Camera camera;
-        rendering::AbstractRender* renderer;
+        rendering::SdlRender* renderer;
+        Scene scene;
     public:
         Instance();
         ~Instance();

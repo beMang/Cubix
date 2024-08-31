@@ -1,6 +1,6 @@
 CC = g++
 
-main: ./math/*.cpp ./objects/*.cpp ./app/*.cpp ./main.cpp
+main: ./math/*.cpp ./objects/*.cpp ./app/*.cpp ./rendering/*.cpp ./main.cpp
 	$(CC) -std=c++17 -Wall -Wextra $^ $$(sdl2-config --cflags --libs) -g -o bin/main.bin
 
 run: main

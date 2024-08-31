@@ -1,5 +1,7 @@
 #include "instance.hpp"
 #include <cassert>
+#include <iostream>
+#include "../rendering/sdl_render.hpp"
 
 namespace app {
     Instance::Instance() : 
@@ -7,8 +9,9 @@ namespace app {
         window(NULL), 
         show_fps(false), 
         quit(false), 
-        renderer(NULL), 
-        camera(objects::Camera(maths::Vector(0,0,0), maths::Vector(0,0,0), 1, 1)) 
+        camera(objects::Camera(maths::Vector(0,0,0), maths::Vector(0,0,0), 1, 1)),
+        renderer(NULL),
+        scene(Scene("default"))
     {
         if(SDL_TRUE){
             SDL_version *version = (SDL_version*)malloc(sizeof(SDL_version));
@@ -30,8 +33,8 @@ namespace app {
         window = SDL_CreateWindow("Cubix", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_VULKAN);
         assert(window != NULL && "SDL_CreateWindow failed");
 
-        //init the renderer
-        //init the scene and load the objects in memory
+        this->renderer = new rendering::SdlRender(window, scene, camera);
+        renderer->init();
     }
 
     void Instance::loop() {
@@ -57,6 +60,9 @@ namespace app {
             //handle events
             //handleKeyboard(this->camera, &quit, this->event);
             //handleMouse(camera);
+            SDL_PumpEvents();
+            while(SDL_PollEvent(&(this->event)))
+                if(event.type == SDL_QUIT) this->quit = true;
 
             //Draw the scene
             //draw_object(renderer, camera, &blue, cube);
@@ -76,15 +82,15 @@ namespace app {
                 printf("fps : %f.1 \n", 1/time); //SHOW FPS COUNTER IN TERMINAL
             }
         }
-        exit();
     }
 
     int Instance::exit()
     {
+        cout << "Exiting..." << endl;
         if (window!=NULL) SDL_DestroyWindow(window);
-        if (renderer!=nullptr) renderer->close();
+        if (renderer!=nullptr) delete renderer;
         SDL_Quit();
-        return status;
+        return this->status;
     }
 
     void Instance::showFps()

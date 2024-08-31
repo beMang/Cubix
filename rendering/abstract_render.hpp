@@ -9,7 +9,8 @@ namespace rendering
         virtual void init() = 0;
         virtual void render() = 0;
         virtual void clean() = 0;
-        virtual void close() = 0;
+
+        virtual ~AbstractRender() = default;
     };
 } // namespace rendering
 
