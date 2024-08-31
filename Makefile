@@ -1,7 +1,7 @@
 CC = g++
 
-main: ./math/*.cpp ./objects/object.cpp ./objects/mesh.cpp ./objects/face.cpp ./objects/camera.cpp ./main.cpp
-	$(CC) $^ -Wall -Wextra $$(sdl2-config --cflags --libs) -g -o bin/main.bin
+main: ./math/*.cpp ./objects/*.cpp ./app/*.cpp ./main.cpp
+	$(CC) -std=c++17 -Wall -Wextra $^ $$(sdl2-config --cflags --libs) -g -o bin/main.bin
 
 run: main
 	./bin/main.bin
