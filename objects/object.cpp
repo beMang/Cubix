@@ -1,8 +1,21 @@
 #include "object.hpp"
+#include "../math/vector.hpp"
 #include <iostream>
 
-namespace rendering
+namespace objects
 {
+    using namespace maths;
+
+    Object::Object(Vector position, Vector rotation)
+    {
+        this->position = position;
+        this->rotation = rotation;
+    }
+
+    Object::~Object()
+    {
+    }
+
     Vector Object::get_position()
     {
         return position;
@@ -59,7 +72,5 @@ namespace rendering
         position.print();
         std::cout << "Rotation: ";
         rotation.print();
-
-        std::cout << "Vertices: ";
     }
 } // namespace rendering

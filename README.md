@@ -17,3 +17,8 @@ For now we can just render vertices with some edge but the goal is to implement 
 * Texture mapping
 * Z-buffer
 * Clipping to optimise the thing
+
+## TRANSLATION FROM C TO CPP :
+* Object => general meaning for any object in a scene
+* camera herit from object class (position and rotation have the same meaning)
+* mesh herit from object class !

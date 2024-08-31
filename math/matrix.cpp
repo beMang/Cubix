@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <algorithm>
 #include <cassert>
+#include "vector.hpp"
 
 namespace maths{
 
@@ -128,6 +129,17 @@ namespace maths{
         this->n_rows = result.get_n_rows();
         this->numbers = std::vector<double>(result.numbers);
         return *this;
+    }
+
+    Matrix::operator Vector()
+    {
+        assert(this->n_cols == 1 && "Error, matrix must have only one column");
+        Vector v = Vector(this->n_rows);
+        for (int i = 0; i < this->n_rows; i++)
+        {
+            v(i) = (*this)(i, 0);
+        }
+        return v;
     }
 
     double Matrix::matrixNorm()

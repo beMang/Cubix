@@ -1,6 +1,6 @@
 CC = g++
 
-main: ./math/operation.cpp ./math/matrice.cpp ./rendering/camera.cpp ./events/event.cpp ./rendering/face.cpp ./rendering/object.cpp ./loader/obj_file_loader.cpp ./rendering/rendering.cpp main.cpp -lm
+main: ./math/*.cpp ./objects/object.cpp ./objects/mesh.cpp ./objects/face.cpp ./main.cpp
 	$(CC) $^ -Wall -Wextra $$(sdl2-config --cflags --libs) -g -o bin/main.bin
 
 run: main

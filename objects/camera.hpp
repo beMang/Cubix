@@ -2,17 +2,15 @@
 #define CAMERA_HPP
 
 #include "../math/vector.hpp"
+#include "object.hpp"
 
-namespace rendering
+namespace objects
 {
     using namespace maths;
 
-    class Camera
+    class Camera : public Object
     {
     private:
-        Vector position;
-        Vector rotation;
-
         double surface_height;
         double surface_width;
         Vector surface_center;
@@ -21,23 +19,17 @@ namespace rendering
         ~Camera();
 
         //GETTERS
-        Vector get_position();
-        Vector get_rotation();
+        double get_surface_height();
+        double get_surface_width();
 
         //SETTERS
-        void set_position(Vector position);
-        void set_rotation(Vector rotation);
         void set_surface_height(double height);
         void set_surface_width(double width);
 
         //OPERATIONS
-        void rotateX(double angle);
-        void rotateY(double angle);
-        void rotateZ(double angle);
-
-        void translateX(double displacement);
-        void translateY(double displacement);
-        void translateZ(double displacement);
+        void translateForward(double displacement);
+        void translateRight(double displacement);
+        void translateUp(double displacement);
     };
     
 } // namespace rendering

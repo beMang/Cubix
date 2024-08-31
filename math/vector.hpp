@@ -17,6 +17,7 @@ namespace maths
         double dot(Vector& other);
         double & operator()(int row);
         double const& operator()(int row) const;
+        int size();
 
         //AUXILIARY
         void print();

@@ -1,17 +1,17 @@
 #ifndef OBJECT_HPP
 #define OBJECT_HPP
 
-#include "../math/matrix.hpp"
 #include "../math/vector.hpp"
+#include "face.hpp"
 
-namespace rendering
+namespace objects
 {
     using namespace maths;
 
     class Object
     {
         public :
-            Object(Vector position, Vector rotation, std::vector<Vector> vertices, std::vector<Face> faces);
+            Object(Vector position, Vector rotation);
             ~Object();
 
             //GETTERS
@@ -34,12 +34,10 @@ namespace rendering
             //AUXILIARY
             void print();
 
-        private:
+        protected:
             Vector position;
             Vector rotation;
-            std::vector<Vector> vertices;
-            std::vector<Face> faces;
-    }
-} // namespace rendering
+    };
+} // namespace objects
 
 #endif

@@ -46,6 +46,11 @@ namespace maths
         return this->get(row, 0);
     }
 
+    int Vector::size()
+    {
+        return this->get_n_rows();
+    }
+
     void Vector::print()
     {
         printf("Vector : |");

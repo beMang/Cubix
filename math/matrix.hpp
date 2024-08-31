@@ -5,6 +5,8 @@
 
 namespace maths
 {
+    class Vector;
+
     class Matrix
     {
     public:
@@ -22,6 +24,7 @@ namespace maths
 
         //AUXILIARY
         void print();
+        operator Vector();
 
         //OPERATIONS
         Matrix operator+(Matrix& other);

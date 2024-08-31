@@ -2,11 +2,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "object.h"
-#include "face.h"
-#include "../math/matrice.h"
-#include "camera.h"
-#include "object.hpp"
 
 //HELPER FUNCTIONS
 static Matrice_t** makeVertices(double coordinates[][3], int n_vertices);
