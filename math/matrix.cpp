@@ -131,6 +131,26 @@ namespace maths{
         return *this;
     }
 
+    Matrix Matrix::operator*(Matrix &other) const {
+        assert(this->n_cols == other.get_n_rows() && "Error, wrong dimensions");
+
+        Matrix result = Matrix(this->n_rows, other.get_n_cols(), 0.0);
+        for (int i = 0; i < result.get_n_rows(); i++)
+        {
+            for (int j = 0; j < result.get_n_cols(); j++)
+            {
+                double entry = 0;
+                for (int k = 0; k < this->n_cols; k++)
+                {
+                    entry += (*this)(i, k) * other(k, j);
+                }
+                result(i, j) = entry;
+            }
+        }
+
+        return result;
+    }
+
     Matrix::operator Vector()
     {
         assert(this->n_cols == 1 && "Error, matrix must have only one column");

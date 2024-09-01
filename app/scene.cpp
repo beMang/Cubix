@@ -20,7 +20,7 @@ namespace app {
         this->meshes.clear();
     }
 
-    std::vector<objects::Mesh> const Scene::getMeshes()
+    std::vector<objects::Mesh> Scene::getMeshes()
     {
         return this->meshes;
     }

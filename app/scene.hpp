@@ -11,7 +11,7 @@ namespace app
 
     class Scene
     {
-    private:
+    public:
         std::vector<objects::Mesh> meshes;
         string name;
     public:
@@ -23,7 +23,7 @@ namespace app
         void clearMesh();
 
         //getters
-        std::vector<objects::Mesh> const getMeshes();
+        std::vector<objects::Mesh> getMeshes();
     };
 } // namespace app
 

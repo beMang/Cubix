@@ -17,7 +17,7 @@ namespace rendering
         app::Scene& scene;
         objects::Camera& camera;
 
-        void drawMesh(SDL_Renderer* renderer, objects::Mesh object, objects::Camera camera);
+        void drawMesh(objects::Mesh object, objects::Camera camera);
     public:
         SdlRender(SDL_Window* window, app::Scene& scene, objects::Camera& camera);
         ~SdlRender();

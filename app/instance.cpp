@@ -35,6 +35,9 @@ namespace app {
 
         this->renderer = new rendering::SdlRender(window, scene, camera);
         renderer->init();
+
+        //create objects
+        this->scene.addMesh(Mesh("model/cube.obj", Vector(0,0,4), Vector(0,0,0), 1));
     }
 
     void Instance::loop() {
@@ -63,6 +66,10 @@ namespace app {
             SDL_PumpEvents();
             while(SDL_PollEvent(&(this->event)))
                 if(event.type == SDL_QUIT) this->quit = true;
+
+            //update the scene
+            //objects::Mesh& o1 = this->scene.getMeshes()[0];
+            //o1.translateZ(-0.01);
 
             //Draw the scene
             //draw_object(renderer, camera, &blue, cube);

@@ -8,8 +8,7 @@ namespace objects
     {
         this->surface_height = surface_height;
         this->surface_width = surface_width;
-        this->surface_center = position;
-        surface_center(0) += 1;
+        this->surface_center = Vector(0, 0, 1);
     }
 
     Camera::~Camera()
@@ -72,8 +71,6 @@ namespace objects
 
     Vector Camera::getCameraVector()
     {
-        this->surface_center -= this->position;
-
         Matrix rotationX = Matrix::rotationX_matrix(rotation(0));
         Matrix rotationY = Matrix::rotationY_matrix(rotation(1));
         Matrix rotationZ = Matrix::rotationZ_matrix(rotation(2));
@@ -83,7 +80,24 @@ namespace objects
         result = rotationY * result;
         result = rotationX * result;
 
-        this->surface_center += this->position; // Reset the surface center
         return result;
+    }
+
+    std::vector<Vector> Camera::getRelativeToCamera(std::vector<Vector>& globalVertices)
+    {
+        Matrix const rotationX = Matrix::rotationX_matrix(rotation(0));
+        Matrix const rotationY = Matrix::rotationY_matrix(rotation(1));
+        Matrix const rotationZ = Matrix::rotationZ_matrix(rotation(2));
+
+        std::vector<Vector> relativeToCamera = std::vector<Vector>();
+        for (Vector vertex : globalVertices)
+        {
+            Vector relative = vertex - this->position;
+            relative = rotationZ * relative;
+            relative = rotationY * relative;
+            relative = rotationX * relative;
+            relativeToCamera.push_back(relative);
+        }
+        return relativeToCamera;
     }
 } // namespace rendering

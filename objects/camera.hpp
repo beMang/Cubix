@@ -3,6 +3,7 @@
 
 #include "../math/vector.hpp"
 #include "object.hpp"
+#include <vector>
 
 namespace objects
 {
@@ -35,6 +36,7 @@ namespace objects
         void translateUp(double displacement);
 
         Vector getCameraVector();
+        std::vector<Vector > getRelativeToCamera(std::vector<Vector>& globalVertices);
     };
     
 } // namespace rendering

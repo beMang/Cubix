@@ -1,5 +1,4 @@
 #include "mesh.hpp"
-#include "face.hpp"
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
@@ -8,12 +7,12 @@
 
 namespace objects
 {
-    Mesh::Mesh(string filename, Vector position, Vector rotation, double scale) : Object(position, rotation)
+    Mesh::Mesh(string filename, Vector position, Vector rotation, double scale) : Object(position, rotation), scale(scale)
     {
         this->vertices = vector<Vector>();
         this->faces = vector<Face>();
 
-        loadVerticesAndFaces(filename, this->vertices, this->faces, scale);
+        loadVerticesAndFaces(filename, this->vertices, this->faces);
         for (vector<Face>::iterator it = this->faces.begin(); it < this->faces.end(); it++)
         {
             it->computeNormal(this->vertices);
@@ -47,6 +46,21 @@ namespace objects
         }
     }
 
+    vector<Vector> Mesh::getGlobalVertices()
+    {
+        maths::Matrix rotationX = maths::Matrix::rotationX_matrix(this->rotation(0));
+        maths::Matrix rotationY = maths::Matrix::rotationY_matrix(this->rotation(1));
+        maths::Matrix rotationZ = maths::Matrix::rotationZ_matrix(this->rotation(2));
+
+        vector<Vector> global_vertices = vector<Vector>();
+        for (vector<Vector>::iterator it = this->vertices.begin(); it < this->vertices.end(); it++)
+        {
+            Vector global_vertex = rotationX*rotationY*rotationZ*(*it)*scale + this->position;
+            global_vertices.push_back(global_vertex);
+        }
+        return global_vertices;
+    }
+
     void Mesh::countVerticesAndFaces(string filename, int &n_vertices, int &n_faces)
     {
         const int MAX = 100;
@@ -69,7 +83,7 @@ namespace objects
         fclose(input);
     }
 
-    void Mesh::loadVerticesAndFaces(string filename, vector<Vector> &vertices, vector<Face> &faces, double scale)
+    void Mesh::loadVerticesAndFaces(string filename, vector<Vector> &vertices, vector<Face> &faces)
     {
         int n_vertices, n_faces;
         countVerticesAndFaces(filename, n_vertices, n_faces);
@@ -94,7 +108,7 @@ namespace objects
                 for (int i = 0; i < 3; i++)
                 {
                     occurence = strtok(NULL, " ");
-                    vertices[current_vertice](i) = strtod(occurence, NULL)*scale;
+                    vertices[current_vertice](i) = strtod(occurence, NULL);
                 }
                 current_vertice++;
             } else if (*occurence==*"f") {

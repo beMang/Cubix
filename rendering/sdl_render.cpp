@@ -1,9 +1,44 @@
 #include "sdl_render.hpp"
 #include <cassert>
+#include <vector>
+#include "../math/vector.hpp"
+#include <iostream>
 
 namespace rendering {
-    void SdlRender::drawMesh(SDL_Renderer *renderer, objects::Mesh mesh, objects::Camera camera)
+    void SdlRender::drawMesh(objects::Mesh mesh, objects::Camera camera)
     {
+        // TODO : Implementer le rendu de l'objet
+
+        std::vector<maths::Vector> globalVertices = mesh.getGlobalVertices();
+        std::vector<maths::Vector> relativeToCamera = camera.getRelativeToCamera(globalVertices);
+
+        //PROJECT MESH WITH HOMOGENEOUS COORDINATES
+        std::vector<maths::Vector> projectedVertices = std::vector<maths::Vector>();
+        for (maths::Vector& vertex : relativeToCamera)
+        {
+            maths::Vector projectedVertex = maths::Vector(2);
+            projectedVertex(0) = vertex(0) / vertex(2);
+            projectedVertex(1) = vertex(1) / vertex(2);
+            projectedVertices.push_back(projectedVertex);
+        }
+
+        //CLIPPING
+        //TODO
+
+        //MAP ON SDL WINDOW
+        for(maths::Vector& vertex : projectedVertices){
+            maths::Vector translationVector = maths::Vector(2);
+            translationVector(0) = 1;
+            translationVector(1) = -1;
+            vertex = vertex + translationVector;
+            vertex(1) = -vertex(1);
+            vertex*=250;
+        }
+
+        //DRAW POINTS AND LINES OF MESH
+        for(maths::Vector& vertex : projectedVertices){
+            sdlDrawPoint(this->renderer, vertex(0), vertex(1), 5);
+        }
     }
 
     SdlRender::SdlRender(SDL_Window* window, app::Scene& scene, objects::Camera& camera) : window(window), scene(scene), camera(camera)
@@ -23,8 +58,9 @@ namespace rendering {
 
     void SdlRender::render()
     {
+        assert(SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255)==0 && "Erreur de SDL_SetRenderDrawColor");
         for(auto mesh : scene.getMeshes()){
-            drawMesh(renderer, mesh, camera);
+            drawMesh(mesh, camera);
         }
 
         SDL_RenderPresent(renderer);

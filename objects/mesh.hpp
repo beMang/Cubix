@@ -4,6 +4,7 @@
 #include "../math/matrix.hpp"
 #include "../math/vector.hpp"
 #include "object.hpp"
+#include "face.hpp"
 #include <vector>
 #include <string>
 
@@ -22,12 +23,15 @@ namespace objects
 
             void print();
 
+            vector<Vector> getGlobalVertices();
+
         private:
             std::vector<Vector> vertices;
             std::vector<Face> faces;
+            double scale;
 
             void countVerticesAndFaces(string filename, int& n_vertices, int& n_faces);
-            void loadVerticesAndFaces(string filename, vector<Vector>& vertices, vector<Face>& faces, double scale);
+            void loadVerticesAndFaces(string filename, vector<Vector>& vertices, vector<Face>& faces);
     };
 } // namespace objects
 

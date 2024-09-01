@@ -34,6 +34,7 @@ namespace maths
         Matrix operator*(double scalar);
         Matrix& operator*=(double scalar);
         Matrix operator*(Matrix& other);
+        Matrix operator*(Matrix& other) const;
 
         double matrixNorm();
         void normalize();
